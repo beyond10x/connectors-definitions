@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
-    "contract_digest": "slice-sha256/2:7ac42f17441c32acb3d9a52da1da2741830d00305af46999ab265719af27af1e",
+    "source_digest": "d6590b1cb8b0355306cfa6e7954ac459ae74ad04250955f86508f35874faa5b4",
+    "contract_digest": "slice-sha256/2:d62abc68bb0f0891fb39536b7ca15c6df85a0b2fdc4de563c46c132ffd3f6ac6",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -101,6 +101,15 @@
         "oauth2_client_credentials"
       ]
     },
+    "connectors_definitions.definition.Format": {
+      "title": "Format",
+      "x-ess-name": "connectors_definitions.definition.Format",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "connectors-provider/1"
+      ]
+    },
     "connectors_definitions.definition.Identity": {
       "title": "Identity",
       "x-ess-name": "connectors_definitions.definition.Identity",
@@ -119,6 +128,17 @@
         "subject_pointer"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.Location": {
+      "title": "Location",
+      "x-ess-name": "connectors_definitions.definition.Location",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "path",
+        "query",
+        "header"
+      ]
     },
     "connectors_definitions.definition.Method": {
       "title": "Method",
@@ -142,7 +162,10 @@
         "id": {
           "type": "string"
         },
-        "operation_id": {
+        "effect": {
+          "$ref": "#/$defs/connectors_definitions.definition.Effect"
+        },
+        "description": {
           "type": "string"
         },
         "method": {
@@ -151,19 +174,67 @@
         "path": {
           "type": "string"
         },
-        "effect": {
-          "$ref": "#/$defs/connectors_definitions.definition.Effect"
+        "parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.Parameter"
+          }
         },
-        "description": {
+        "operation_id": {
           "type": "string"
         }
       },
       "required": [
         "id",
         "effect",
-        "description"
+        "description",
+        "method",
+        "path",
+        "parameters"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.Parameter": {
+      "title": "Parameter",
+      "x-ess-name": "connectors_definitions.definition.Parameter",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/connectors_definitions.definition.Location"
+        },
+        "type": {
+          "$ref": "#/$defs/connectors_definitions.definition.ParameterType"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "repeated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "location",
+        "type",
+        "required"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.ParameterType": {
+      "title": "ParameterType",
+      "x-ess-name": "connectors_definitions.definition.ParameterType",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "string",
+        "integer",
+        "number",
+        "boolean"
+      ]
     },
     "connectors_definitions.definition.Pkce": {
       "title": "Pkce",
@@ -181,6 +252,9 @@
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
+        "format": {
+          "$ref": "#/$defs/connectors_definitions.definition.Format"
+        },
         "schema": {
           "type": "string"
         },
@@ -210,7 +284,7 @@
         }
       },
       "required": [
-        "schema",
+        "format",
         "provider",
         "title",
         "base_url",
@@ -284,21 +358,32 @@
         "url": {
           "type": "string"
         },
+        "retrieved": {
+          "type": "string"
+        },
         "sha256": {
           "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
         },
         "bytes": {
           "type": "integer"
         },
+        "vendored": {
+          "type": "string"
+        },
         "license": {
+          "type": "string"
+        },
+        "license_file": {
           "type": "string"
         }
       },
       "required": [
         "kind",
         "url",
+        "retrieved",
         "sha256",
-        "bytes"
+        "bytes",
+        "vendored"
       ],
       "additionalProperties": false
     },

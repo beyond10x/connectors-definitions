@@ -10,9 +10,9 @@ From `atlas/ROADMAP.md`:
 
 ## Boundary
 
-This repository holds data only: one authored YAML file per provider in `providers/`, and pinned
-upstream references. The format, the lowering frontends, the runtime, credential custody, admission,
-approval and audit belong to [Connectors](https://github.com/beyond10x/connectors). The decision
+This repository holds data only: one YAML file per provider in `providers/`, format
+`connectors-provider/1`, and the vendored upstream documents in `upstream/<id>/`. The importers,
+the runtime, credential custody, admission, approval and audit belong to [Connectors](https://github.com/beyond10x/connectors). The decision
 and design are `architecture-decision-record:provider-definitions-and-runtimes` and
 `architecture-design:provider-definitions-and-runtimes` in the Connectors planning store.
 
@@ -21,12 +21,12 @@ and design are `architecture-decision-record:provider-definitions-and-runtimes` 
 - No code: no scripts, no build, no command, binary path or shell string in a definition.
 - No credentials: no token, key, client secret or password in any file. Auth profiles name flows,
   URLs and scopes only.
-- Every upstream document is pinned by URL and SHA-256. Vendor bytes are committed only where the
-  license allows it, and the license is recorded beside the pin.
+- Every upstream document is vendored gzipped under `upstream/<id>/` and pinned by URL, retrieval
+  date, SHA-256 and size. Its license file is vendored beside it where the document declares one.
 - Every auth profile cites the vendor's own documentation in `sources`. Do not copy endpoint URLs,
   PKCE modes or token shapes from another provider.
-- Generated output (lowered JSON, pages, `index.json`) is produced by CI from a pinned `connectors`
-  release. Never edit it by hand.
+- Operations are imported from the upstream document, not retyped. `generated/` is produced by
+  `task schema`. Never edit generated output by hand.
 - Providers that start a host process or use host credentials do not belong here.
 - Names of other organizations, their customers, products, hosts and tickets do not enter this
   repository, its commits or its releases.
@@ -40,12 +40,15 @@ requests and merges through `b10x-gates api`. A personal `gh` login is read-only
 
 | Command | Does |
 |---|---|
-| `task check` | the gate: `ess specify validate`, a drift check of `generated/`, then every `providers/*.yaml` against the projected schema, file name equal to `provider`, and `upstream.sha256` as 64 lowercase hex |
+| `task check` | the gate: `ess specify validate`, a drift check of `generated/`, then for every `providers/*.yaml`: file name equal to `provider`, the vendored source hashing to `upstream.sha256`, and the file against the projected schema |
 | `task schema` | regenerates `generated/` from `spec/`; commit the result |
 
 `spec/` is the source of the definition format. `generated/` is never edited by hand. Tool versions
 are in `toolchain.json`; `yq` is mikefarah v4.
 
-`task check` validates shape only. Whether an `operation_id` exists upstream, whether the pinned
-document still hashes to `sha256`, and whether an operation mixes `operation_id` with
-`method`/`path` are checked by the Connectors lowering frontend once it exists.
+Data files carry `format: connectors-provider/1`. The JSON Schema `$id` is
+`urn:b10x:connectors-provider:1`; `task check` sets the `schema` field the ESS validator selects by.
+Do not write `schema:` into a provider file.
+
+`task check` does not check that each `operation_id`, `method` and `path` match the vendored
+document; the Connectors importer will.

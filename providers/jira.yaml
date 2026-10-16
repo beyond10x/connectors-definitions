@@ -1,12 +1,16 @@
-schema: urn:beyond10x:connectors-definition:1
+format: connectors-provider/1
 provider: jira
 title: Jira Cloud
 upstream:
   kind: openapi
   url: https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json
+  retrieved: "2026-09-29"
   sha256: 655b4790a5c8543c81755c8250c6a8b8f58ee62712168a39d628d6d927549709
   bytes: 2478466
-base_url: https://{site}.atlassian.net/rest/api/3
+  vendored: upstream/jira/jira-platform-v3.json.gz
+  license: Apache-2.0
+  license_file: upstream/jira/LICENSE
+base_url: https://{site}.atlassian.net
 auth:
   - id: atlassian.basic
     purpose: service_account
@@ -14,20 +18,122 @@ auth:
     acquisition:
       flow: static_entry
     identity:
-      path: myself
+      path: /rest/api/3/myself
       subject_pointer: /accountId
     sources:
       - https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
 operations:
-  - id: issues.search
-    operation_id: searchAndReconsileIssuesUsingJql
-    effect: read
-    description: Search issues by JQL, one page per call; the walk ends on a page without nextPageToken
   - id: issue.get
-    operation_id: getIssue
     effect: read
     description: Read one issue by id or key, with the fields named in fields and the expansions named in expand
+    method: GET
+    path: /rest/api/3/issue/{issueIdOrKey}
+    parameters:
+      - name: issueIdOrKey
+        location: path
+        required: true
+        type: string
+      - name: fields
+        location: query
+        required: false
+        type: string
+        repeated: true
+      - name: fieldsByKeys
+        location: query
+        required: false
+        type: boolean
+      - name: expand
+        location: query
+        required: false
+        type: string
+      - name: properties
+        location: query
+        required: false
+        type: string
+        repeated: true
+      - name: updateHistory
+        location: query
+        required: false
+        type: boolean
+      - name: failFast
+        location: query
+        required: false
+        type: boolean
+    operation_id: getIssue
   - id: issue.comments
-    operation_id: getComments
     effect: read
     description: List one issue's comments, one page per call; the walk ends when startAt plus the page's comments reaches total
+    method: GET
+    path: /rest/api/3/issue/{issueIdOrKey}/comment
+    parameters:
+      - name: issueIdOrKey
+        location: path
+        required: true
+        type: string
+      - name: startAt
+        location: query
+        required: false
+        type: integer
+      - name: maxResults
+        location: query
+        required: false
+        type: integer
+      - name: orderBy
+        location: query
+        required: false
+        type: string
+      - name: expand
+        location: query
+        required: false
+        type: string
+    operation_id: getComments
+  - id: issues.search
+    effect: read
+    description: Search issues by JQL, one page per call; the walk ends on a page without nextPageToken
+    method: GET
+    path: /rest/api/3/search/jql
+    parameters:
+      - name: jql
+        location: query
+        required: false
+        type: string
+      - name: nextPageToken
+        location: query
+        required: false
+        type: string
+      - name: maxResults
+        location: query
+        required: false
+        type: integer
+      - name: fields
+        location: query
+        required: false
+        type: string
+        repeated: true
+      - name: expand
+        location: query
+        required: false
+        type: string
+      - name: properties
+        location: query
+        required: false
+        type: string
+        repeated: true
+      - name: fieldsByKeys
+        location: query
+        required: false
+        type: boolean
+      - name: failFast
+        location: query
+        required: false
+        type: boolean
+      - name: reconcileIssues
+        location: query
+        required: false
+        type: integer
+        repeated: true
+      - name: includeArchivedProjects
+        location: query
+        required: false
+        type: boolean
+    operation_id: searchAndReconsileIssuesUsingJql

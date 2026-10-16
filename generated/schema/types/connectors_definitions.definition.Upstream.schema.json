@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
-    "contract_digest": "slice-sha256/2:4dd1cd1322f88c94b8fe51eeb0713c77aac24208bdacfc3f2de851fd69cde290",
+    "source_digest": "d6590b1cb8b0355306cfa6e7954ac459ae74ad04250955f86508f35874faa5b4",
+    "contract_digest": "slice-sha256/2:dc26e1df1c5bf4442f1a274ebf46265e25ee0b82186c38e5da1181325b880eae",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -28,21 +28,32 @@
         "url": {
           "type": "string"
         },
+        "retrieved": {
+          "type": "string"
+        },
         "sha256": {
           "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
         },
         "bytes": {
           "type": "integer"
         },
+        "vendored": {
+          "type": "string"
+        },
         "license": {
+          "type": "string"
+        },
+        "license_file": {
           "type": "string"
         }
       },
       "required": [
         "kind",
         "url",
+        "retrieved",
         "sha256",
-        "bytes"
+        "bytes",
+        "vendored"
       ],
       "additionalProperties": false
     },

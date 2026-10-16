@@ -1,7 +1,10 @@
 domain: connectors_definitions.definition
-summary: One authored provider definition, providers/<id>.yaml (connectors-definition/1).
+summary: One provider definition, providers/<id>.yaml, format connectors-provider/1, resolved so a runtime or a person can use it as it stands.
 
 types:
+  - name: connectors_definitions.definition.Format
+    kind: enum
+    variants: [connectors-provider/1]
   - name: connectors_definitions.definition.Sha256Hex
     kind: newtype
     of: String
@@ -14,9 +17,12 @@ types:
     fields:
       - {name: kind, type: connectors_definitions.definition.UpstreamKind}
       - {name: url, type: String}
+      - {name: retrieved, type: String}
       - {name: sha256, type: connectors_definitions.definition.Sha256Hex}
       - {name: bytes, type: Integer}
+      - {name: vendored, type: String}
       - {name: license, type: "Optional<String>"}
+      - {name: license_file, type: "Optional<String>"}
   - name: connectors_definitions.definition.Flow
     kind: enum
     variants: [static_entry, oauth2_authorization_code, oauth2_client_credentials]
@@ -63,19 +69,35 @@ types:
   - name: connectors_definitions.definition.Method
     kind: enum
     variants: [GET, POST, PUT, PATCH, DELETE]
+  - name: connectors_definitions.definition.Location
+    kind: enum
+    variants: [path, query, header]
+  - name: connectors_definitions.definition.ParameterType
+    kind: enum
+    variants: [string, integer, number, boolean]
+  - name: connectors_definitions.definition.Parameter
+    kind: struct
+    fields:
+      - {name: name, type: String}
+      - {name: location, type: connectors_definitions.definition.Location}
+      - {name: type, type: connectors_definitions.definition.ParameterType}
+      - {name: required, type: Boolean}
+      - {name: repeated, type: "Optional<Boolean>"}
   - name: connectors_definitions.definition.Operation
     kind: struct
     fields:
       - {name: id, type: String}
-      - {name: operation_id, type: "Optional<String>"}
-      - {name: method, type: "Optional<connectors_definitions.definition.Method>"}
-      - {name: path, type: "Optional<String>"}
       - {name: effect, type: connectors_definitions.definition.Effect}
       - {name: description, type: String}
+      - {name: method, type: connectors_definitions.definition.Method}
+      - {name: path, type: String}
+      - {name: parameters, type: "List<connectors_definitions.definition.Parameter>"}
+      - {name: operation_id, type: "Optional<String>"}
   - name: connectors_definitions.definition.ProviderDefinition
     kind: struct
     fields:
-      - {name: schema, type: String}
+      - {name: format, type: connectors_definitions.definition.Format}
+      - {name: schema, type: "Optional<String>"}
       - {name: provider, type: String}
       - {name: title, type: String}
       - {name: upstream, type: "Optional<connectors_definitions.definition.Upstream>"}

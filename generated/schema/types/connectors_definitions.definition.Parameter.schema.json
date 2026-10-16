@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Parameter",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "d6590b1cb8b0355306cfa6e7954ac459ae74ad04250955f86508f35874faa5b4",
+    "contract_digest": "slice-sha256/2:207ead70581f25694520503cf8c9f0ec22439809c1a700991069f284566209b4",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Location": {
+      "title": "Location",
+      "x-ess-name": "connectors_definitions.definition.Location",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "path",
+        "query",
+        "header"
+      ]
+    },
+    "connectors_definitions.definition.Parameter": {
+      "title": "Parameter",
+      "x-ess-name": "connectors_definitions.definition.Parameter",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/connectors_definitions.definition.Location"
+        },
+        "type": {
+          "$ref": "#/$defs/connectors_definitions.definition.ParameterType"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "repeated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "location",
+        "type",
+        "required"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.ParameterType": {
+      "title": "ParameterType",
+      "x-ess-name": "connectors_definitions.definition.ParameterType",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "string",
+        "integer",
+        "number",
+        "boolean"
+      ]
+    }
+  }
+}

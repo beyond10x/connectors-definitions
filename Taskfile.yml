@@ -1,7 +1,7 @@
 version: "3"
 
 vars:
-  SCHEMA_ID: urn:beyond10x:connectors-definition:1
+  SCHEMA_ID: urn:b10x:connectors-provider:1
   BUILD: .local/build
 
 tasks:
@@ -12,7 +12,7 @@ tasks:
       - ess generate --path spec --kind schema --out generated
 
   check:
-    desc: Validate spec/, check generated/ for drift, validate every providers/*.yaml
+    desc: Validate spec/, check generated/ for drift, validate every providers/*.yaml and its vendored source
     cmds:
       - ess specify validate --path spec
       - ess generate --path spec --kind schema --out generated --check
@@ -20,12 +20,15 @@ tasks:
       - |
         yq -o=json '. + {"$id": "{{.SCHEMA_ID}}"}' \
           generated/schema/types/connectors_definitions.definition.ProviderDefinition.schema.json \
-          > {{.BUILD}}/schemas/connectors-definition-1.schema.json
+          > {{.BUILD}}/schemas/connectors-provider-1.schema.json
       - |
         for f in providers/*.yaml; do
           id=$(basename "$f" .yaml)
           test "$id" = "$(yq '.provider' "$f")" || { echo "$f: provider is not $id"; exit 1; }
-          yq -e '(.upstream == null) or (.upstream.sha256 | test("^[0-9a-f]{64}$"))' "$f" > /dev/null || { echo "$f: upstream.sha256 is not 64 lowercase hex"; exit 1; }
-          yq -o=json '.' "$f" > "{{.BUILD}}/providers/$id.json"
+          if [ "$(yq '.upstream' "$f")" != null ]; then
+            sha=$(yq '.upstream.sha256' "$f"); src=$(yq '.upstream.vendored' "$f")
+            test "$(gunzip -c "$src" | sha256sum | cut -d' ' -f1)" = "$sha" || { echo "$f: $src does not hash to $sha"; exit 1; }
+          fi
+          yq -o=json '.schema = "{{.SCHEMA_ID}}"' "$f" > "{{.BUILD}}/providers/$id.json"
         done
       - ess generate schema validate --schemas {{.BUILD}}/schemas {{.BUILD}}/providers
