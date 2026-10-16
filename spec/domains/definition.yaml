@@ -1,106 +1,51 @@
 domain: connectors_definitions.definition
-summary: One provider definition, providers/<id>.yaml, format connectors-provider/1, resolved so a runtime or a person can use it as it stands.
+summary: One provider definition, providers/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer.
 
 types:
-  - name: connectors_definitions.definition.Format
+  - name: connectors_definitions.definition.SchemaId
     kind: enum
-    variants: [connectors-provider/1]
+    variants: ["urn:beyond10x:connectors-definition:1"]
   - name: connectors_definitions.definition.Sha256Hex
     kind: newtype
     of: String
     alphabet: "0123456789abcdef"
-  - name: connectors_definitions.definition.UpstreamKind
-    kind: enum
-    variants: [openapi, swagger2, google-discovery]
-  - name: connectors_definitions.definition.Upstream
+  - name: connectors_definitions.definition.Source
     kind: struct
     fields:
-      - {name: kind, type: connectors_definitions.definition.UpstreamKind}
-      - {name: url, type: String}
-      - {name: retrieved, type: String}
+      - {name: openapi, type: String}
       - {name: sha256, type: connectors_definitions.definition.Sha256Hex}
-      - {name: bytes, type: Integer}
-      - {name: vendored, type: String}
-      - {name: license, type: "Optional<String>"}
-      - {name: license_file, type: "Optional<String>"}
-  - name: connectors_definitions.definition.Flow
+      - {name: amendments, type: "Optional<String>"}
+  - name: connectors_definitions.definition.ConfigType
     kind: enum
-    variants: [static_entry, oauth2_authorization_code, oauth2_client_credentials]
-  - name: connectors_definitions.definition.Pkce
-    kind: enum
-    variants: [none, S256]
-  - name: connectors_definitions.definition.Scheme
-    kind: enum
-    variants: [http_bearer, http_basic]
-  - name: connectors_definitions.definition.Purpose
-    kind: enum
-    variants: [service_account, delegated_user, app_level]
-  - name: connectors_definitions.definition.Acquisition
+    variants: [string]
+  - name: connectors_definitions.definition.ConfigField
     kind: struct
     fields:
-      - {name: flow, type: connectors_definitions.definition.Flow}
-      - {name: authorize_url, type: "Optional<String>"}
-      - {name: token_url, type: "Optional<String>"}
-      - {name: pkce, type: "Optional<connectors_definitions.definition.Pkce>"}
-      - {name: authorize_params, type: "Optional<Map<String, String>>"}
-  - name: connectors_definitions.definition.Scopes
+      - {name: type, type: connectors_definitions.definition.ConfigType}
+      - {name: default, type: "Optional<String>"}
+      - {name: values, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.AuthScheme
+    kind: enum
+    variants: [basic, bearer]
+  - name: connectors_definitions.definition.Auth
     kind: struct
     fields:
-      - {name: requestable, type: "List<String>"}
-      - {name: minimum, type: "List<String>"}
-  - name: connectors_definitions.definition.Identity
-    kind: struct
-    fields:
-      - {name: path, type: String}
-      - {name: subject_pointer, type: String}
-  - name: connectors_definitions.definition.AuthProfile
-    kind: struct
-    fields:
-      - {name: id, type: String}
-      - {name: purpose, type: connectors_definitions.definition.Purpose}
-      - {name: scheme, type: connectors_definitions.definition.Scheme}
-      - {name: acquisition, type: connectors_definitions.definition.Acquisition}
-      - {name: scopes, type: "Optional<connectors_definitions.definition.Scopes>"}
-      - {name: identity, type: "Optional<connectors_definitions.definition.Identity>"}
-      - {name: sources, type: "List<String>"}
+      - {name: scheme, type: connectors_definitions.definition.AuthScheme}
   - name: connectors_definitions.definition.Effect
     kind: enum
     variants: [read, write]
-  - name: connectors_definitions.definition.Method
-    kind: enum
-    variants: [GET, POST, PUT, PATCH, DELETE]
-  - name: connectors_definitions.definition.Location
-    kind: enum
-    variants: [path, query, header]
-  - name: connectors_definitions.definition.ParameterType
-    kind: enum
-    variants: [string, integer, number, boolean]
-  - name: connectors_definitions.definition.Parameter
-    kind: struct
-    fields:
-      - {name: name, type: String}
-      - {name: location, type: connectors_definitions.definition.Location}
-      - {name: type, type: connectors_definitions.definition.ParameterType}
-      - {name: required, type: Boolean}
-      - {name: repeated, type: "Optional<Boolean>"}
   - name: connectors_definitions.definition.Operation
     kind: struct
     fields:
-      - {name: id, type: String}
-      - {name: effect, type: connectors_definitions.definition.Effect}
-      - {name: description, type: String}
-      - {name: method, type: connectors_definitions.definition.Method}
-      - {name: path, type: String}
-      - {name: parameters, type: "List<connectors_definitions.definition.Parameter>"}
-      - {name: operation_id, type: "Optional<String>"}
+      - {name: op, type: String}
+      - {name: effect, type: "Optional<connectors_definitions.definition.Effect>"}
+      - {name: description, type: "Optional<String>"}
   - name: connectors_definitions.definition.ProviderDefinition
     kind: struct
     fields:
-      - {name: format, type: connectors_definitions.definition.Format}
-      - {name: schema, type: "Optional<String>"}
-      - {name: provider, type: String}
-      - {name: title, type: String}
-      - {name: upstream, type: "Optional<connectors_definitions.definition.Upstream>"}
+      - {name: schema, type: connectors_definitions.definition.SchemaId}
+      - {name: source, type: connectors_definitions.definition.Source}
       - {name: base_url, type: String}
-      - {name: auth, type: "List<connectors_definitions.definition.AuthProfile>"}
-      - {name: operations, type: "List<connectors_definitions.definition.Operation>"}
+      - {name: config, type: "Optional<Map<String, connectors_definitions.definition.ConfigField>>"}
+      - {name: auth, type: "Map<String, connectors_definitions.definition.Auth>"}
+      - {name: operations, type: "Map<String, connectors_definitions.definition.Operation>"}

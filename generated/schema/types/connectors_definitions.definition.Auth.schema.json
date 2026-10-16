@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Auth",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
+    "contract_digest": "slice-sha256/2:752b76c9ee93f8f520eb3b2abce2929b08ed8a02839f134afc8714803e9d5622",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Auth": {
+      "title": "Auth",
+      "x-ess-name": "connectors_definitions.definition.Auth",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "scheme": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthScheme"
+        }
+      },
+      "required": [
+        "scheme"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthScheme": {
+      "title": "AuthScheme",
+      "x-ess-name": "connectors_definitions.definition.AuthScheme",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "basic",
+        "bearer"
+      ]
+    }
+  }
+}

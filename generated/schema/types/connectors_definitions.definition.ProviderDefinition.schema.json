@@ -4,67 +4,49 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "d6590b1cb8b0355306cfa6e7954ac459ae74ad04250955f86508f35874faa5b4",
-    "contract_digest": "slice-sha256/2:d62abc68bb0f0891fb39536b7ca15c6df85a0b2fdc4de563c46c132ffd3f6ac6",
+    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
+    "contract_digest": "slice-sha256/2:f6952ffa44c4a9fa8f0a4f98f25d9dcd2032d4731306fabbed075b0241fb6363",
     "regenerate": "ess generate"
   },
   "$defs": {
-    "connectors_definitions.definition.Acquisition": {
-      "title": "Acquisition",
-      "x-ess-name": "connectors_definitions.definition.Acquisition",
+    "connectors_definitions.definition.Auth": {
+      "title": "Auth",
+      "x-ess-name": "connectors_definitions.definition.Auth",
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "flow": {
-          "$ref": "#/$defs/connectors_definitions.definition.Flow"
-        },
-        "authorize_url": {
-          "type": "string"
-        },
-        "token_url": {
-          "type": "string"
-        },
-        "pkce": {
-          "$ref": "#/$defs/connectors_definitions.definition.Pkce"
-        },
-        "authorize_params": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "x-ess-map-key": "String"
+        "scheme": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthScheme"
         }
       },
       "required": [
-        "flow"
+        "scheme"
       ],
       "additionalProperties": false
     },
-    "connectors_definitions.definition.AuthProfile": {
-      "title": "AuthProfile",
-      "x-ess-name": "connectors_definitions.definition.AuthProfile",
+    "connectors_definitions.definition.AuthScheme": {
+      "title": "AuthScheme",
+      "x-ess-name": "connectors_definitions.definition.AuthScheme",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "basic",
+        "bearer"
+      ]
+    },
+    "connectors_definitions.definition.ConfigField": {
+      "title": "ConfigField",
+      "x-ess-name": "connectors_definitions.definition.ConfigField",
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "id": {
+        "type": {
+          "$ref": "#/$defs/connectors_definitions.definition.ConfigType"
+        },
+        "default": {
           "type": "string"
         },
-        "purpose": {
-          "$ref": "#/$defs/connectors_definitions.definition.Purpose"
-        },
-        "scheme": {
-          "$ref": "#/$defs/connectors_definitions.definition.Scheme"
-        },
-        "acquisition": {
-          "$ref": "#/$defs/connectors_definitions.definition.Acquisition"
-        },
-        "scopes": {
-          "$ref": "#/$defs/connectors_definitions.definition.Scopes"
-        },
-        "identity": {
-          "$ref": "#/$defs/connectors_definitions.definition.Identity"
-        },
-        "sources": {
+        "values": {
           "type": "array",
           "items": {
             "type": "string"
@@ -72,13 +54,18 @@
         }
       },
       "required": [
-        "id",
-        "purpose",
-        "scheme",
-        "acquisition",
-        "sources"
+        "type"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.ConfigType": {
+      "title": "ConfigType",
+      "x-ess-name": "connectors_definitions.definition.ConfigType",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "string"
+      ]
     },
     "connectors_definitions.definition.Effect": {
       "title": "Effect",
@@ -90,76 +77,13 @@
         "write"
       ]
     },
-    "connectors_definitions.definition.Flow": {
-      "title": "Flow",
-      "x-ess-name": "connectors_definitions.definition.Flow",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "static_entry",
-        "oauth2_authorization_code",
-        "oauth2_client_credentials"
-      ]
-    },
-    "connectors_definitions.definition.Format": {
-      "title": "Format",
-      "x-ess-name": "connectors_definitions.definition.Format",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "connectors-provider/1"
-      ]
-    },
-    "connectors_definitions.definition.Identity": {
-      "title": "Identity",
-      "x-ess-name": "connectors_definitions.definition.Identity",
-      "x-ess-kind": "struct",
-      "type": "object",
-      "properties": {
-        "path": {
-          "type": "string"
-        },
-        "subject_pointer": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "path",
-        "subject_pointer"
-      ],
-      "additionalProperties": false
-    },
-    "connectors_definitions.definition.Location": {
-      "title": "Location",
-      "x-ess-name": "connectors_definitions.definition.Location",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "path",
-        "query",
-        "header"
-      ]
-    },
-    "connectors_definitions.definition.Method": {
-      "title": "Method",
-      "x-ess-name": "connectors_definitions.definition.Method",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "GET",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE"
-      ]
-    },
     "connectors_definitions.definition.Operation": {
       "title": "Operation",
       "x-ess-name": "connectors_definitions.definition.Operation",
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "id": {
+        "op": {
           "type": "string"
         },
         "effect": {
@@ -167,84 +91,12 @@
         },
         "description": {
           "type": "string"
-        },
-        "method": {
-          "$ref": "#/$defs/connectors_definitions.definition.Method"
-        },
-        "path": {
-          "type": "string"
-        },
-        "parameters": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/connectors_definitions.definition.Parameter"
-          }
-        },
-        "operation_id": {
-          "type": "string"
         }
       },
       "required": [
-        "id",
-        "effect",
-        "description",
-        "method",
-        "path",
-        "parameters"
+        "op"
       ],
       "additionalProperties": false
-    },
-    "connectors_definitions.definition.Parameter": {
-      "title": "Parameter",
-      "x-ess-name": "connectors_definitions.definition.Parameter",
-      "x-ess-kind": "struct",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "location": {
-          "$ref": "#/$defs/connectors_definitions.definition.Location"
-        },
-        "type": {
-          "$ref": "#/$defs/connectors_definitions.definition.ParameterType"
-        },
-        "required": {
-          "type": "boolean"
-        },
-        "repeated": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "name",
-        "location",
-        "type",
-        "required"
-      ],
-      "additionalProperties": false
-    },
-    "connectors_definitions.definition.ParameterType": {
-      "title": "ParameterType",
-      "x-ess-name": "connectors_definitions.definition.ParameterType",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "string",
-        "integer",
-        "number",
-        "boolean"
-      ]
-    },
-    "connectors_definitions.definition.Pkce": {
-      "title": "Pkce",
-      "x-ess-name": "connectors_definitions.definition.Pkce",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "none",
-        "S256"
-      ]
     },
     "connectors_definitions.definition.ProviderDefinition": {
       "title": "ProviderDefinition",
@@ -252,92 +104,54 @@
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "format": {
-          "$ref": "#/$defs/connectors_definitions.definition.Format"
-        },
         "schema": {
-          "type": "string"
+          "$ref": "#/$defs/connectors_definitions.definition.SchemaId"
         },
-        "provider": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "upstream": {
-          "$ref": "#/$defs/connectors_definitions.definition.Upstream"
+        "source": {
+          "$ref": "#/$defs/connectors_definitions.definition.Source"
         },
         "base_url": {
           "type": "string"
         },
+        "config": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.ConfigField"
+          },
+          "x-ess-map-key": "String"
+        },
         "auth": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/connectors_definitions.definition.AuthProfile"
-          }
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.Auth"
+          },
+          "x-ess-map-key": "String"
         },
         "operations": {
-          "type": "array",
-          "items": {
+          "type": "object",
+          "additionalProperties": {
             "$ref": "#/$defs/connectors_definitions.definition.Operation"
-          }
+          },
+          "x-ess-map-key": "String"
         }
       },
       "required": [
-        "format",
-        "provider",
-        "title",
+        "schema",
+        "source",
         "base_url",
         "auth",
         "operations"
       ],
       "additionalProperties": false
     },
-    "connectors_definitions.definition.Purpose": {
-      "title": "Purpose",
-      "x-ess-name": "connectors_definitions.definition.Purpose",
+    "connectors_definitions.definition.SchemaId": {
+      "title": "SchemaId",
+      "x-ess-name": "connectors_definitions.definition.SchemaId",
       "x-ess-kind": "enum",
       "type": "string",
       "enum": [
-        "service_account",
-        "delegated_user",
-        "app_level"
+        "urn:beyond10x:connectors-definition:1"
       ]
-    },
-    "connectors_definitions.definition.Scheme": {
-      "title": "Scheme",
-      "x-ess-name": "connectors_definitions.definition.Scheme",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "http_bearer",
-        "http_basic"
-      ]
-    },
-    "connectors_definitions.definition.Scopes": {
-      "title": "Scopes",
-      "x-ess-name": "connectors_definitions.definition.Scopes",
-      "x-ess-kind": "struct",
-      "type": "object",
-      "properties": {
-        "requestable": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "minimum": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "requestable",
-        "minimum"
-      ],
-      "additionalProperties": false
     },
     "connectors_definitions.definition.Sha256Hex": {
       "title": "Sha256Hex",
@@ -346,57 +160,27 @@
       "type": "string",
       "x-ess-alphabet": "0123456789abcdef"
     },
-    "connectors_definitions.definition.Upstream": {
-      "title": "Upstream",
-      "x-ess-name": "connectors_definitions.definition.Upstream",
+    "connectors_definitions.definition.Source": {
+      "title": "Source",
+      "x-ess-name": "connectors_definitions.definition.Source",
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "kind": {
-          "$ref": "#/$defs/connectors_definitions.definition.UpstreamKind"
-        },
-        "url": {
-          "type": "string"
-        },
-        "retrieved": {
+        "openapi": {
           "type": "string"
         },
         "sha256": {
           "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
         },
-        "bytes": {
-          "type": "integer"
-        },
-        "vendored": {
-          "type": "string"
-        },
-        "license": {
-          "type": "string"
-        },
-        "license_file": {
+        "amendments": {
           "type": "string"
         }
       },
       "required": [
-        "kind",
-        "url",
-        "retrieved",
-        "sha256",
-        "bytes",
-        "vendored"
+        "openapi",
+        "sha256"
       ],
       "additionalProperties": false
-    },
-    "connectors_definitions.definition.UpstreamKind": {
-      "title": "UpstreamKind",
-      "x-ess-name": "connectors_definitions.definition.UpstreamKind",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "openapi",
-        "swagger2",
-        "google-discovery"
-      ]
     }
   }
 }

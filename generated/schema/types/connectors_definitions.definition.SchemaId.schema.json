@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.SchemaId",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
+    "contract_digest": "slice-sha256/2:e9fead7356958a7837aaea3a2a62de2809adaff99f79690d8e840480fbd8db95",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.SchemaId": {
+      "title": "SchemaId",
+      "x-ess-name": "connectors_definitions.definition.SchemaId",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "urn:beyond10x:connectors-definition:1"
+      ]
+    }
+  }
+}

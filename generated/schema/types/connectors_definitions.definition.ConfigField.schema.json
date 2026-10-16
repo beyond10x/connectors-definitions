@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.ConfigField",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
+    "contract_digest": "slice-sha256/2:f2e7d52baeb6f52f5d20ab402b5bea24e94c294cd44ebaa8aed66616cb7737dd",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.ConfigField": {
+      "title": "ConfigField",
+      "x-ess-name": "connectors_definitions.definition.ConfigField",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/connectors_definitions.definition.ConfigType"
+        },
+        "default": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.ConfigType": {
+      "title": "ConfigType",
+      "x-ess-name": "connectors_definitions.definition.ConfigType",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "string"
+      ]
+    }
+  }
+}

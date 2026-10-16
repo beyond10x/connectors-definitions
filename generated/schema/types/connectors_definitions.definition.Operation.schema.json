@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "d6590b1cb8b0355306cfa6e7954ac459ae74ad04250955f86508f35874faa5b4",
-    "contract_digest": "slice-sha256/2:a53498365a0c8c1776d5b5317b890b9363d1b960eb092f35c43453debeb89bca",
+    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
+    "contract_digest": "slice-sha256/2:b3bb3c4d15ae9234b7885037827ff623d3f246977e944f32320f259d45411728",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -19,37 +19,13 @@
         "write"
       ]
     },
-    "connectors_definitions.definition.Location": {
-      "title": "Location",
-      "x-ess-name": "connectors_definitions.definition.Location",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "path",
-        "query",
-        "header"
-      ]
-    },
-    "connectors_definitions.definition.Method": {
-      "title": "Method",
-      "x-ess-name": "connectors_definitions.definition.Method",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "GET",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE"
-      ]
-    },
     "connectors_definitions.definition.Operation": {
       "title": "Operation",
       "x-ess-name": "connectors_definitions.definition.Operation",
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
-        "id": {
+        "op": {
           "type": "string"
         },
         "effect": {
@@ -57,74 +33,12 @@
         },
         "description": {
           "type": "string"
-        },
-        "method": {
-          "$ref": "#/$defs/connectors_definitions.definition.Method"
-        },
-        "path": {
-          "type": "string"
-        },
-        "parameters": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/connectors_definitions.definition.Parameter"
-          }
-        },
-        "operation_id": {
-          "type": "string"
         }
       },
       "required": [
-        "id",
-        "effect",
-        "description",
-        "method",
-        "path",
-        "parameters"
+        "op"
       ],
       "additionalProperties": false
-    },
-    "connectors_definitions.definition.Parameter": {
-      "title": "Parameter",
-      "x-ess-name": "connectors_definitions.definition.Parameter",
-      "x-ess-kind": "struct",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "location": {
-          "$ref": "#/$defs/connectors_definitions.definition.Location"
-        },
-        "type": {
-          "$ref": "#/$defs/connectors_definitions.definition.ParameterType"
-        },
-        "required": {
-          "type": "boolean"
-        },
-        "repeated": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "name",
-        "location",
-        "type",
-        "required"
-      ],
-      "additionalProperties": false
-    },
-    "connectors_definitions.definition.ParameterType": {
-      "title": "ParameterType",
-      "x-ess-name": "connectors_definitions.definition.ParameterType",
-      "x-ess-kind": "enum",
-      "type": "string",
-      "enum": [
-        "string",
-        "integer",
-        "number",
-        "boolean"
-      ]
     }
   }
 }
