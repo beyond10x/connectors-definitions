@@ -1,0 +1,18 @@
+schema: urn:beyond10x:connectors-definition:1
+source:
+  openapi: upstream/gitlab/openapi_v3.yaml.gz
+  sha256: f9e830bd3d2b99c49d60a7713fe1a64f5164418aca24b559287daab075beb530
+  amendments: upstream/gitlab/openapi_v3.amendments.json
+base_url: https://{hostname}
+config:
+  hostname: {type: string, default: gitlab.com}
+auth:
+  gitlab.pat: {scheme: bearer}
+operations:
+  projects.list: {op: getApiV4Projects}
+  project.get: {op: getApiV4ProjectsId}
+  merge_requests.list: {op: getApiV4ProjectsIdMergeRequests}
+  merge_request.get: {op: getApiV4ProjectsIdMergeRequestsMergeRequestIid}
+  merge_request.diffs: {op: getApiV4ProjectsIdMergeRequestsMergeRequestIidDiffs}
+  merge_request.discussions: {op: getApiV4ProjectsIdMergeRequestsNoteableIdDiscussions}
+  merge_request.discussion.get: {op: getApiV4ProjectsIdMergeRequestsNoteableIdDiscussionsDiscussionId}
