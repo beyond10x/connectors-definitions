@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Effect",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:d0f35871b1693f962b1535b3f321493bc0ef407f83b644a7e52386a77acc7564",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Effect": {
+      "title": "Effect",
+      "x-ess-name": "connectors_definitions.definition.Effect",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "read",
+        "write"
+      ]
+    }
+  }
+}

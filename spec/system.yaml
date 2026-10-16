@@ -1,0 +1,5 @@
+format: ess/25
+system: connectors_definitions
+version: v1
+domains:
+  - connectors_definitions.definition

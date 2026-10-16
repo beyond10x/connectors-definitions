@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Upstream",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:4dd1cd1322f88c94b8fe51eeb0713c77aac24208bdacfc3f2de851fd69cde290",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Sha256Hex": {
+      "title": "Sha256Hex",
+      "x-ess-name": "connectors_definitions.definition.Sha256Hex",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "x-ess-alphabet": "0123456789abcdef"
+    },
+    "connectors_definitions.definition.Upstream": {
+      "title": "Upstream",
+      "x-ess-name": "connectors_definitions.definition.Upstream",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/connectors_definitions.definition.UpstreamKind"
+        },
+        "url": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
+        },
+        "bytes": {
+          "type": "integer"
+        },
+        "license": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "url",
+        "sha256",
+        "bytes"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.UpstreamKind": {
+      "title": "UpstreamKind",
+      "x-ess-name": "connectors_definitions.definition.UpstreamKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "openapi",
+        "swagger2",
+        "google-discovery"
+      ]
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Operation",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:60964821f5df6b634c0b0bfbb7cf98e0dcf3526b94b5516117f510cc5384ae4a",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Effect": {
+      "title": "Effect",
+      "x-ess-name": "connectors_definitions.definition.Effect",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "read",
+        "write"
+      ]
+    },
+    "connectors_definitions.definition.Method": {
+      "title": "Method",
+      "x-ess-name": "connectors_definitions.definition.Method",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+      ]
+    },
+    "connectors_definitions.definition.Operation": {
+      "title": "Operation",
+      "x-ess-name": "connectors_definitions.definition.Operation",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "operation_id": {
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/$defs/connectors_definitions.definition.Method"
+        },
+        "path": {
+          "type": "string"
+        },
+        "effect": {
+          "$ref": "#/$defs/connectors_definitions.definition.Effect"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "effect",
+        "description"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:61b3156f3c46c9734e09ff2d6788b91ecd43191ba21036f1a33bd03a4d2d06f0",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Sha256Hex": {
+      "title": "Sha256Hex",
+      "x-ess-name": "connectors_definitions.definition.Sha256Hex",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "x-ess-alphabet": "0123456789abcdef"
+    }
+  }
+}

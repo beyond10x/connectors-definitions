@@ -36,7 +36,16 @@ and design are `architecture-decision-record:provider-definitions-and-runtimes` 
 Every write to GitHub is `b10x-bot[bot]`: commits and pushes through `b10x-gates bot`, pull
 requests and merges through `b10x-gates api`. A personal `gh` login is read-only here.
 
-## Status
+## Commands
 
-Scaffold. Until Connectors ships `connectors-provider/1` and the lowering command, there is nothing
-to validate, and no gate exists.
+| Command | Does |
+|---|---|
+| `task check` | the gate: `ess specify validate`, a drift check of `generated/`, then every `providers/*.yaml` against the projected schema, file name equal to `provider`, and `upstream.sha256` as 64 lowercase hex |
+| `task schema` | regenerates `generated/` from `spec/`; commit the result |
+
+`spec/` is the source of the definition format. `generated/` is never edited by hand. Tool versions
+are in `toolchain.json`; `yq` is mikefarah v4.
+
+`task check` validates shape only. Whether an `operation_id` exists upstream, whether the pinned
+document still hashes to `sha256`, and whether an operation mixes `operation_id` with
+`method`/`path` are checked by the Connectors lowering frontend once it exists.

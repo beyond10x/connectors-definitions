@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.UpstreamKind",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:42511e8b9db881a4a70962fbc7a45cb1e182f83d3a4d0dbc40748faf1be433f3",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.UpstreamKind": {
+      "title": "UpstreamKind",
+      "x-ess-name": "connectors_definitions.definition.UpstreamKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "openapi",
+        "swagger2",
+        "google-discovery"
+      ]
+    }
+  }
+}

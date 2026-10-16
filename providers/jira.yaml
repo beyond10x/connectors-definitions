@@ -1,0 +1,33 @@
+schema: urn:beyond10x:connectors-definition:1
+provider: jira
+title: Jira Cloud
+upstream:
+  kind: openapi
+  url: https://developer.atlassian.com/cloud/jira/platform/swagger-v3.v3.json
+  sha256: 655b4790a5c8543c81755c8250c6a8b8f58ee62712168a39d628d6d927549709
+  bytes: 2478466
+base_url: https://{site}.atlassian.net/rest/api/3
+auth:
+  - id: atlassian.basic
+    purpose: service_account
+    scheme: http_basic
+    acquisition:
+      flow: static_entry
+    identity:
+      path: myself
+      subject_pointer: /accountId
+    sources:
+      - https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/
+operations:
+  - id: issues.search
+    operation_id: searchAndReconsileIssuesUsingJql
+    effect: read
+    description: Search issues by JQL, one page per call; the walk ends on a page without nextPageToken
+  - id: issue.get
+    operation_id: getIssue
+    effect: read
+    description: Read one issue by id or key, with the fields named in fields and the expansions named in expand
+  - id: issue.comments
+    operation_id: getComments
+    effect: read
+    description: List one issue's comments, one page per call; the walk ends when startAt plus the page's comments reaches total

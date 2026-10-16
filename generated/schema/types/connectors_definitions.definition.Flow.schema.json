@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Flow",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:b9085d8f5230e4dee5858beed627b329cf35b9c556a8c1be636c5e1ccbf959a4",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Flow": {
+      "title": "Flow",
+      "x-ess-name": "connectors_definitions.definition.Flow",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "static_entry",
+        "oauth2_authorization_code",
+        "oauth2_client_credentials"
+      ]
+    }
+  }
+}

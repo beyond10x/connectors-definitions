@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Pkce",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:49c98be8debfd6926d702dd516aa4a6a1c7e7e4a36cbb47106d4a0822fadc108",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Pkce": {
+      "title": "Pkce",
+      "x-ess-name": "connectors_definitions.definition.Pkce",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "none",
+        "S256"
+      ]
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Scopes",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1efde353d5377819cb8b0f23c86eaceaef16feef6f0f6ce0118714d28bd6523e",
+    "contract_digest": "slice-sha256/2:a6eb0e619c4b001684f2f0a76e496349660390ed55d33d1b1f756d6650000b73",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Scopes": {
+      "title": "Scopes",
+      "x-ess-name": "connectors_definitions.definition.Scopes",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "requestable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minimum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "requestable",
+        "minimum"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

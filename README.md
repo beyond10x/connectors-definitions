@@ -4,11 +4,32 @@ Declarative provider definitions for [Connectors](https://github.com/beyond10x/c
 provider is one reviewed YAML file under [`providers/`](providers/README.md). It says where the
 provider's API is, how to authenticate, and which operations are exposed.
 
-**Status: scaffold.** No provider has been moved here yet. The format, the lowering step and the
-`connectors definitions install` command are designed and not yet built. The design is in the
-Connectors planning store, not yet merged there:
+**Status: early.** One provider, [`jira`](providers/jira.yaml), is here, and `task check` validates
+it. The lowering step and the `connectors definitions install` command are designed and not yet
+built. The design is in the Connectors planning store, not yet merged there:
 `architecture-decision-record:provider-definitions-and-runtimes` and
 `architecture-design:provider-definitions-and-runtimes`.
+
+## Specifications
+
+| Specification | What it fixes | Where |
+|---|---|---|
+| `connectors-definition/1` | the shape of `providers/<id>.yaml` | [ESS source](spec/domains/definition.yaml), projected to [JSON Schema](generated/schema/types/connectors_definitions.definition.ProviderDefinition.schema.json) |
+| `auth.profile/v1alpha1` | what an auth profile declares | [Connectors contract](https://github.com/beyond10x/connectors/blob/main/contracts/auth/profile/v1alpha1/semantics.md) |
+| `catalog/v1alpha1` | bundles, the index and generic HTTP execution | [Connectors contract](https://github.com/beyond10x/connectors/blob/main/contracts/catalog/v1alpha1/semantics.md) |
+| `connectors-provider/1` | the lowered document runtimes load | not written yet; design § 5 |
+
+## Check
+
+```console
+task check
+```
+
+It needs [`ess`](https://github.com/beyond10x/ess) at the version in [`toolchain.json`](toolchain.json),
+[`yq`](https://github.com/mikefarah/yq) v4 and [`task`](https://taskfile.dev). It validates the ESS
+source, fails if `generated/` drifted from it, and validates every `providers/*.yaml` against the
+projected schema. CI runs the same task. After a change to `spec/`, run `task schema` and commit
+`generated/`.
 
 ## How it will work
 

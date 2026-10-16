@@ -1,0 +1,84 @@
+domain: connectors_definitions.definition
+summary: One authored provider definition, providers/<id>.yaml (connectors-definition/1).
+
+types:
+  - name: connectors_definitions.definition.Sha256Hex
+    kind: newtype
+    of: String
+    alphabet: "0123456789abcdef"
+  - name: connectors_definitions.definition.UpstreamKind
+    kind: enum
+    variants: [openapi, swagger2, google-discovery]
+  - name: connectors_definitions.definition.Upstream
+    kind: struct
+    fields:
+      - {name: kind, type: connectors_definitions.definition.UpstreamKind}
+      - {name: url, type: String}
+      - {name: sha256, type: connectors_definitions.definition.Sha256Hex}
+      - {name: bytes, type: Integer}
+      - {name: license, type: "Optional<String>"}
+  - name: connectors_definitions.definition.Flow
+    kind: enum
+    variants: [static_entry, oauth2_authorization_code, oauth2_client_credentials]
+  - name: connectors_definitions.definition.Pkce
+    kind: enum
+    variants: [none, S256]
+  - name: connectors_definitions.definition.Scheme
+    kind: enum
+    variants: [http_bearer, http_basic]
+  - name: connectors_definitions.definition.Purpose
+    kind: enum
+    variants: [service_account, delegated_user, app_level]
+  - name: connectors_definitions.definition.Acquisition
+    kind: struct
+    fields:
+      - {name: flow, type: connectors_definitions.definition.Flow}
+      - {name: authorize_url, type: "Optional<String>"}
+      - {name: token_url, type: "Optional<String>"}
+      - {name: pkce, type: "Optional<connectors_definitions.definition.Pkce>"}
+      - {name: authorize_params, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.definition.Scopes
+    kind: struct
+    fields:
+      - {name: requestable, type: "List<String>"}
+      - {name: minimum, type: "List<String>"}
+  - name: connectors_definitions.definition.Identity
+    kind: struct
+    fields:
+      - {name: path, type: String}
+      - {name: subject_pointer, type: String}
+  - name: connectors_definitions.definition.AuthProfile
+    kind: struct
+    fields:
+      - {name: id, type: String}
+      - {name: purpose, type: connectors_definitions.definition.Purpose}
+      - {name: scheme, type: connectors_definitions.definition.Scheme}
+      - {name: acquisition, type: connectors_definitions.definition.Acquisition}
+      - {name: scopes, type: "Optional<connectors_definitions.definition.Scopes>"}
+      - {name: identity, type: "Optional<connectors_definitions.definition.Identity>"}
+      - {name: sources, type: "List<String>"}
+  - name: connectors_definitions.definition.Effect
+    kind: enum
+    variants: [read, write]
+  - name: connectors_definitions.definition.Method
+    kind: enum
+    variants: [GET, POST, PUT, PATCH, DELETE]
+  - name: connectors_definitions.definition.Operation
+    kind: struct
+    fields:
+      - {name: id, type: String}
+      - {name: operation_id, type: "Optional<String>"}
+      - {name: method, type: "Optional<connectors_definitions.definition.Method>"}
+      - {name: path, type: "Optional<String>"}
+      - {name: effect, type: connectors_definitions.definition.Effect}
+      - {name: description, type: String}
+  - name: connectors_definitions.definition.ProviderDefinition
+    kind: struct
+    fields:
+      - {name: schema, type: String}
+      - {name: provider, type: String}
+      - {name: title, type: String}
+      - {name: upstream, type: "Optional<connectors_definitions.definition.Upstream>"}
+      - {name: base_url, type: String}
+      - {name: auth, type: "List<connectors_definitions.definition.AuthProfile>"}
+      - {name: operations, type: "List<connectors_definitions.definition.Operation>"}
