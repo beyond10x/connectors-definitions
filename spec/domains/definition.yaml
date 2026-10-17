@@ -262,6 +262,7 @@ types:
     kind: struct
     fields:
       - {name: schema, type: connectors_definitions.definition.SchemaId}
+      - {name: id, type: "Optional<String>"}
       - {name: catalog, type: "Optional<String>"}
       - {name: source, type: connectors_definitions.definition.Source}
       - {name: base_url, type: String}
