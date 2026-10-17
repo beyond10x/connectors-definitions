@@ -6,7 +6,8 @@ base_url: https://{site}.atlassian.net
 config:
   site: {type: string}
 auth:
-  atlassian.basic: {scheme: basic}
+  atlassian.basic: {use: atlassian, default: true, identity: {path: myself}}
+  atlassian.bearer: {use: atlassian, identity: {path: myself}}
 paging:
   token: {request: nextPageToken, next: /nextPageToken, limit: maxResults, last: /isLast}
   offset: {request: startAt, limit: maxResults, total: /total}

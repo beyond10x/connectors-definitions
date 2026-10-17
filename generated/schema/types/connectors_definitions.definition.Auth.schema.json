@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "74b3f6af0b1524704eef96bed1e6f0ed6826f0eece87f2da6086fa5289092228",
-    "contract_digest": "slice-sha256/2:5ecec4014a959d3e8c11cda758d66c6802890637ee34bcc3857f45fbc10de775",
+    "source_digest": "c878ad75b796035f2586e822e2dee8e49995901af34a8018733e4389e249313e",
+    "contract_digest": "slice-sha256/2:ea2ea07705d0dcaf24b56e0fb952b1be86a0d6e080e4b9489f9e3680b7ad78d0",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -15,13 +15,77 @@
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
+        "use": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
         "scheme": {
           "$ref": "#/$defs/connectors_definitions.definition.AuthScheme"
+        },
+        "header": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "account_label": {
+          "type": "string"
+        },
+        "identity": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthIdentity"
+        },
+        "scopes": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthScopes"
+        },
+        "access": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthAccess"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthAccess": {
+      "title": "AuthAccess",
+      "x-ess-name": "connectors_definitions.definition.AuthAccess",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
         }
       },
       "required": [
-        "scheme"
+        "path"
       ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthIdentity": {
+      "title": "AuthIdentity",
+      "x-ess-name": "connectors_definitions.definition.AuthIdentity",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     },
     "connectors_definitions.definition.AuthScheme": {
@@ -31,8 +95,34 @@
       "type": "string",
       "enum": [
         "basic",
-        "bearer"
+        "bearer",
+        "header"
       ]
+    },
+    "connectors_definitions.definition.AuthScopes": {
+      "title": "AuthScopes",
+      "x-ess-name": "connectors_definitions.definition.AuthScopes",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "minimum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "path",
+        "pointer"
+      ],
+      "additionalProperties": false
     }
   }
 }

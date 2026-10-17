@@ -26,11 +26,45 @@ types:
       - {name: values, type: "Optional<List<String>>"}
   - name: connectors_definitions.definition.AuthScheme
     kind: enum
-    variants: [basic, bearer]
+    variants: [basic, bearer, header]
+  - name: connectors_definitions.definition.AuthIdentity
+    kind: struct
+    fields:
+      - {name: path, type: "Optional<String>"}
+      - {name: kind, type: "Optional<String>"}
+      - {name: subject, type: "Optional<String>"}
+  - name: connectors_definitions.definition.AuthScopes
+    kind: struct
+    fields:
+      - {name: path, type: String}
+      - {name: pointer, type: String}
+      - {name: minimum, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.AuthAccess
+    kind: struct
+    fields:
+      - {name: path, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
   - name: connectors_definitions.definition.Auth
     kind: struct
     fields:
-      - {name: scheme, type: connectors_definitions.definition.AuthScheme}
+      - {name: use, type: "Optional<String>"}
+      - {name: default, type: "Optional<Boolean>"}
+      - {name: scheme, type: "Optional<connectors_definitions.definition.AuthScheme>"}
+      - {name: header, type: "Optional<String>"}
+      - {name: prefix, type: "Optional<String>"}
+      - {name: label, type: "Optional<String>"}
+      - {name: account_label, type: "Optional<String>"}
+      - {name: identity, type: "Optional<connectors_definitions.definition.AuthIdentity>"}
+      - {name: scopes, type: "Optional<connectors_definitions.definition.AuthScopes>"}
+      - {name: access, type: "Optional<connectors_definitions.definition.AuthAccess>"}
+  - name: connectors_definitions.definition.AuthLibraryId
+    kind: enum
+    variants: ["urn:beyond10x:connectors-auth:1"]
+  - name: connectors_definitions.definition.AuthLibrary
+    kind: struct
+    fields:
+      - {name: schema, type: connectors_definitions.definition.AuthLibraryId}
+      - {name: profiles, type: "Map<String, connectors_definitions.definition.Auth>"}
   - name: connectors_definitions.definition.PagingStyle
     kind: struct
     fields:

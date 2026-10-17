@@ -1,0 +1,20 @@
+schema: urn:beyond10x:connectors-definition:1
+source:
+  openapi: upstream/confluence-v1/confluence-rest-v1.yaml.gz
+  sha256: fed740a5343255686c481d63c53644eb3163a90676061f9fb1c12659c4fa234e
+base_url: https://{site}.atlassian.net/wiki
+config:
+  site: {type: string}
+auth:
+  atlassian.basic: {use: atlassian, identity: {path: rest/api/user/current}, access: {path: rest/api/space, query: {limit: "1"}}}
+paging:
+  offset: {request: start, limit: limit, max: 100}
+  cursor: {request: cursor, next: /_links/next, limit: limit, max: 100}
+operations:
+  spaces.list: {op: getSpaces}
+  space.get: {op: getSpace}
+  space.pages: {op: getContent}
+  pages.changed: {op: searchContentByCQL}
+  page.get: {op: getContentById}
+  page.comments: {op: getContentComments}
+  content.search: {op: searchByCQL}
