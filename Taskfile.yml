@@ -18,14 +18,14 @@ tasks:
       - ess generate --path spec --kind schema --out generated --check
       - rm -rf {{.BUILD}} && mkdir -p {{.BUILD}}/schemas {{.BUILD}}/instances
       - |
-        yq -o=json '. + {"$id": "urn:beyond10x:connectors-definition:1"}' {{.TYPES}}.ProviderDefinition.schema.json > {{.BUILD}}/schemas/definition.schema.json
+        yq -o=json '. + {"$id": "urn:beyond10x:connectors-definition:1"}' {{.TYPES}}.ConnectorDefinition.schema.json > {{.BUILD}}/schemas/definition.schema.json
         yq -o=json '. + {"$id": "urn:beyond10x:connectors-auth:1"}' {{.TYPES}}.AuthLibrary.schema.json > {{.BUILD}}/schemas/auth.schema.json
       - |
-        for f in providers/*.yaml; do
+        for f in connectors/*.yaml; do
           id=$(basename "$f" .yaml)
           sha=$(yq '.source.sha256' "$f"); src=$(yq '.source.openapi' "$f")
           test "$(gunzip -c "$src" | sha256sum | cut -d' ' -f1)" = "$sha" || { echo "$f: $src does not hash to $sha"; exit 1; }
-          yq -o=json '.' "$f" > "{{.BUILD}}/instances/provider-$id.json"
+          yq -o=json '.' "$f" > "{{.BUILD}}/instances/connector-$id.json"
         done
       - for f in auth/*.yaml; do yq -o=json '.' "$f" > "{{.BUILD}}/instances/auth-$(basename "$f" .yaml).json"; done
       - ess generate schema validate --schemas {{.BUILD}}/schemas {{.BUILD}}/instances

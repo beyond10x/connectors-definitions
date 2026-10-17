@@ -1,5 +1,5 @@
 domain: connectors_definitions.definition
-summary: One provider definition, providers/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer.
+summary: One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer.
 
 types:
   - name: connectors_definitions.definition.SchemaId
@@ -102,7 +102,7 @@ types:
       - {name: paging, type: "Optional<String>"}
       - {name: body, type: "Optional<Map<String, String>>"}
       - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
-  - name: connectors_definitions.definition.ProviderDefinition
+  - name: connectors_definitions.definition.ConnectorDefinition
     kind: struct
     fields:
       - {name: schema, type: connectors_definitions.definition.SchemaId}
