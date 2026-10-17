@@ -1,5 +1,5 @@
 domain: connectors_definitions.definition
-summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download)."
+summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes."
 
 types:
   - name: connectors_definitions.definition.SchemaId
@@ -148,6 +148,20 @@ types:
       - {name: error, type: String}
       - {name: refusals, type: "Optional<List<connectors_definitions.definition.EnvelopeRefusal>>"}
       - {name: otherwise, type: connectors_definitions.definition.EnvelopeCode}
+  - name: connectors_definitions.definition.TextRefusalCode
+    kind: enum
+    variants: [capacity]
+  - name: connectors_definitions.definition.TextRefusal
+    kind: struct
+    fields:
+      - {name: pointers, type: "List<String>"}
+      - {name: contains, type: "List<String>"}
+      - {name: code, type: connectors_definitions.definition.TextRefusalCode}
+  - name: connectors_definitions.definition.Custody
+    kind: struct
+    fields:
+      - {name: secret, type: String}
+      - {name: returns, type: "Map<String, String>"}
   - name: connectors_definitions.definition.Bound
     kind: struct
     fields:
@@ -166,6 +180,8 @@ types:
       - {name: download, type: "Optional<connectors_definitions.definition.Download>"}
       - {name: envelope, type: "Optional<connectors_definitions.definition.Envelope>"}
       - {name: rate_limit_reasons, type: "Optional<List<String>>"}
+      - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
+      - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
   - name: connectors_definitions.definition.Operation
     kind: struct
     fields:
@@ -181,6 +197,8 @@ types:
       - {name: download, type: "Optional<connectors_definitions.definition.Download>"}
       - {name: envelope, type: "Optional<connectors_definitions.definition.Envelope>"}
       - {name: rate_limit_reasons, type: "Optional<List<String>>"}
+      - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
+      - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
       - {name: body, type: "Optional<Map<String, String>>"}
       - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
       - {name: description, type: "Optional<String>"}

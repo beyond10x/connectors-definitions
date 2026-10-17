@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.TextRefusal",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "1856997bc85d9e1e9fdcec258bae86c7a25c0f8b31c47a564543bd81dce0f8e3",
+    "contract_digest": "slice-sha256/2:e4aa0543bff91e9d88d201ae1ffedfe4881799eaf396432d0644f27aaefa0706",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.TextRefusal": {
+      "title": "TextRefusal",
+      "x-ess-name": "connectors_definitions.definition.TextRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.TextRefusalCode"
+        }
+      },
+      "required": [
+        "pointers",
+        "contains",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.TextRefusalCode": {
+      "title": "TextRefusalCode",
+      "x-ess-name": "connectors_definitions.definition.TextRefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "capacity"
+      ]
+    }
+  }
+}
