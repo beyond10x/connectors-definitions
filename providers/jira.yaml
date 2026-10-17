@@ -7,7 +7,12 @@ config:
   site: {type: string}
 auth:
   atlassian.basic: {scheme: basic}
+paging:
+  token: {request: nextPageToken, next: /nextPageToken, limit: maxResults, last: /isLast}
+  offset: {request: startAt, limit: maxResults, total: /total}
+  offset-last: {request: startAt, limit: maxResults, last: /isLast}
 operations:
   issue.get: {op: getIssue}
-  issue.comments: {op: getComments}
+  issue.comments: {op: getComments, paging: offset}
+  issue.changelog: {op: getChangeLogs, paging: offset-last}
   issues.search: {op: searchAndReconsileIssuesUsingJql}

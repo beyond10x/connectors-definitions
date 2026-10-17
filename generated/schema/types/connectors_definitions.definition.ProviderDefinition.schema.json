@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "15e317853f0285cac75e5634c7645b181b41d36857d478fb88ca36edcf59ce85",
-    "contract_digest": "slice-sha256/2:f6952ffa44c4a9fa8f0a4f98f25d9dcd2032d4731306fabbed075b0241fb6363",
+    "source_digest": "8a493184c7114a9d449da5848a45514fdf06a29c58f91da50e44603adea7ebc0",
+    "contract_digest": "slice-sha256/2:c5fd7725a8526d85b60734ffc66a635f0e608ac0ff821a8913b5dcaf6241df21",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -91,11 +91,41 @@
         },
         "description": {
           "type": "string"
+        },
+        "paging": {
+          "type": "string"
         }
       },
       "required": [
         "op"
       ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.PagingStyle": {
+      "title": "PagingStyle",
+      "x-ess-name": "connectors_definitions.definition.PagingStyle",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "string"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "string"
+        },
+        "last": {
+          "type": "string"
+        }
+      },
       "additionalProperties": false
     },
     "connectors_definitions.definition.ProviderDefinition": {
@@ -124,6 +154,13 @@
           "type": "object",
           "additionalProperties": {
             "$ref": "#/$defs/connectors_definitions.definition.Auth"
+          },
+          "x-ess-map-key": "String"
+        },
+        "paging": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.PagingStyle"
           },
           "x-ess-map-key": "String"
         },

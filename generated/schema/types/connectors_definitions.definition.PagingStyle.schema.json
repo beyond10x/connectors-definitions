@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.PagingStyle",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "8a493184c7114a9d449da5848a45514fdf06a29c58f91da50e44603adea7ebc0",
+    "contract_digest": "slice-sha256/2:81351148bd29b1c194b2a68f6b0ac13b74ad400c32a5e82c9415c530535d23f7",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.PagingStyle": {
+      "title": "PagingStyle",
+      "x-ess-name": "connectors_definitions.definition.PagingStyle",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "request": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "string"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "string"
+        },
+        "last": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

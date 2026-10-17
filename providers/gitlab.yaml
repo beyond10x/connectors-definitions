@@ -8,6 +8,8 @@ config:
   hostname: {type: string, default: gitlab.com}
 auth:
   gitlab.pat: {scheme: bearer}
+paging:
+  pages: {request: page, next: "header:x-next-page", limit: per_page, max: 100}
 operations:
   projects.list: {op: getApiV4Projects}
   project.get: {op: getApiV4ProjectsId}

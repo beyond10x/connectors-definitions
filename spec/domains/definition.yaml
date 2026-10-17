@@ -31,6 +31,15 @@ types:
     kind: struct
     fields:
       - {name: scheme, type: connectors_definitions.definition.AuthScheme}
+  - name: connectors_definitions.definition.PagingStyle
+    kind: struct
+    fields:
+      - {name: request, type: "Optional<String>"}
+      - {name: next, type: "Optional<String>"}
+      - {name: limit, type: "Optional<String>"}
+      - {name: max, type: "Optional<Integer>"}
+      - {name: total, type: "Optional<String>"}
+      - {name: last, type: "Optional<String>"}
   - name: connectors_definitions.definition.Effect
     kind: enum
     variants: [read, write]
@@ -40,6 +49,7 @@ types:
       - {name: op, type: String}
       - {name: effect, type: "Optional<connectors_definitions.definition.Effect>"}
       - {name: description, type: "Optional<String>"}
+      - {name: paging, type: "Optional<String>"}
   - name: connectors_definitions.definition.ProviderDefinition
     kind: struct
     fields:
@@ -48,4 +58,5 @@ types:
       - {name: base_url, type: String}
       - {name: config, type: "Optional<Map<String, connectors_definitions.definition.ConfigField>>"}
       - {name: auth, type: "Map<String, connectors_definitions.definition.Auth>"}
+      - {name: paging, type: "Optional<Map<String, connectors_definitions.definition.PagingStyle>>"}
       - {name: operations, type: "Map<String, connectors_definitions.definition.Operation>"}
