@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedItems",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
+    "contract_digest": "slice-sha256/2:5f18ad24ba53b788b52425ed85f61f063d21d0704081e1dd5239958522b52f9a",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedAuthor": {
+      "title": "FeedAuthor",
+      "x-ess-name": "connectors_definitions.definition.FeedAuthor",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedBody": {
+      "title": "FeedBody",
+      "x-ess-name": "connectors_definitions.definition.FeedBody",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "representation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "pointer",
+        "representation"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedItems": {
+      "title": "FeedItems",
+      "x-ess-name": "connectors_definitions.definition.FeedItems",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "string"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "position": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedPosition"
+        },
+        "records": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "author": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedAuthor"
+        },
+        "body": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedBody"
+        }
+      },
+      "required": [
+        "list",
+        "position",
+        "id",
+        "revision",
+        "created_at",
+        "updated_at",
+        "body"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedPosition": {
+      "title": "FeedPosition",
+      "x-ess-name": "connectors_definitions.definition.FeedPosition",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "time"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -67,3 +67,28 @@ operations:
     guard:
       before: {read: merge_request.discussion.get, expect: {/id: discussion_id, /resolvable: "=true"}}
       after: {expect: {/id: discussion_id, /resolved: body.resolved}}
+datasources:
+  merge_requests:
+    kind: feed
+    profile: gitlab-merge-requests/1
+    capabilities: {deletions: not-observed, kind: fixed-word, revision: update-time, visibility: all-private}
+    containers:
+      list: projects.list
+      lookup: project.get
+      query: {membership: "true", order_by: id, sort: asc}
+      cursor: {parameter: id_after, last: /id}
+      id: /id
+      name: /name_with_namespace
+      kind_word: project
+    items:
+      list: merge_requests.list
+      query: {order_by: updated_at, sort: asc, state: all, scope: all}
+      position: {time: updated_after}
+      id: /iid
+      revision: /updated_at
+      created_at: /created_at
+      updated_at: /updated_at
+      author: {id: /author/id, display_name: /author/name}
+      body: {pointer: /description, representation: text/markdown}
+    filters:
+      mine_open: {state: opened, scope: assigned_to_me}

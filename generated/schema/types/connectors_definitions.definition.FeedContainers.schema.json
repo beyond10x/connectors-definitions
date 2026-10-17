@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedContainers",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
+    "contract_digest": "slice-sha256/2:06cddcb0f631fb91e5d5eb4c8828d1adf06beeb1193ce90aef1864c0e49b6280",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedContainers": {
+      "title": "FeedContainers",
+      "x-ess-name": "connectors_definitions.definition.FeedContainers",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "string"
+        },
+        "lookup": {
+          "type": "string"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "cursor": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedCursor"
+        },
+        "records": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind_word": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "list",
+        "lookup",
+        "cursor",
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedCursor": {
+      "title": "FeedCursor",
+      "x-ess-name": "connectors_definitions.definition.FeedCursor",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "last": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -102,6 +102,62 @@ types:
       - {name: paging, type: "Optional<String>"}
       - {name: body, type: "Optional<Map<String, String>>"}
       - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
+  - name: connectors_definitions.definition.DatasourceKind
+    kind: enum
+    variants: [feed]
+  - name: connectors_definitions.definition.FeedCursor
+    kind: struct
+    fields:
+      - {name: parameter, type: String}
+      - {name: next, type: "Optional<String>"}
+      - {name: last, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedContainers
+    kind: struct
+    fields:
+      - {name: list, type: String}
+      - {name: lookup, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
+      - {name: cursor, type: connectors_definitions.definition.FeedCursor}
+      - {name: records, type: "Optional<String>"}
+      - {name: id, type: String}
+      - {name: name, type: "Optional<String>"}
+      - {name: kind_word, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedPosition
+    kind: struct
+    fields:
+      - {name: time, type: String}
+  - name: connectors_definitions.definition.FeedAuthor
+    kind: struct
+    fields:
+      - {name: id, type: String}
+      - {name: display_name, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedBody
+    kind: struct
+    fields:
+      - {name: pointer, type: String}
+      - {name: representation, type: String}
+  - name: connectors_definitions.definition.FeedItems
+    kind: struct
+    fields:
+      - {name: list, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
+      - {name: position, type: connectors_definitions.definition.FeedPosition}
+      - {name: records, type: "Optional<String>"}
+      - {name: id, type: String}
+      - {name: revision, type: String}
+      - {name: created_at, type: String}
+      - {name: updated_at, type: String}
+      - {name: author, type: "Optional<connectors_definitions.definition.FeedAuthor>"}
+      - {name: body, type: connectors_definitions.definition.FeedBody}
+  - name: connectors_definitions.definition.Datasource
+    kind: struct
+    fields:
+      - {name: kind, type: connectors_definitions.definition.DatasourceKind}
+      - {name: profile, type: String}
+      - {name: capabilities, type: "Map<String, String>"}
+      - {name: containers, type: connectors_definitions.definition.FeedContainers}
+      - {name: items, type: connectors_definitions.definition.FeedItems}
+      - {name: filters, type: "Optional<Map<String, Map<String, String>>>"}
   - name: connectors_definitions.definition.ConnectorDefinition
     kind: struct
     fields:
@@ -112,3 +168,4 @@ types:
       - {name: auth, type: "Map<String, connectors_definitions.definition.Auth>"}
       - {name: paging, type: "Optional<Map<String, connectors_definitions.definition.PagingStyle>>"}
       - {name: operations, type: "Map<String, connectors_definitions.definition.Operation>"}
+      - {name: datasources, type: "Optional<Map<String, connectors_definitions.definition.Datasource>>"}

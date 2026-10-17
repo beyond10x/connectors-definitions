@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedPosition",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
+    "contract_digest": "slice-sha256/2:0d94cb3db6c9a22a5e47af89a7c42a9a4166e0747955f93ba244e19954e03968",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedPosition": {
+      "title": "FeedPosition",
+      "x-ess-name": "connectors_definitions.definition.FeedPosition",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "time"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
