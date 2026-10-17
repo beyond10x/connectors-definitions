@@ -3,3 +3,4 @@ system: connectors_definitions
 version: v1
 domains:
   - connectors_definitions.definition
+  - connectors_definitions.references

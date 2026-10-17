@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Binary",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:292ba20f6ea253f7d47a5e87e99b6c6917bb2b8e586b0279f5143a2a086b1161",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Binary": {
+      "title": "Binary",
+      "x-ess-name": "connectors_definitions.definition.Binary",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "max_bytes": {
+          "type": "integer"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "max_bytes"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

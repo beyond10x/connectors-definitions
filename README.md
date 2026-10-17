@@ -8,10 +8,11 @@ and says which of its operations to expose, under which local names, with what c
 auth. Everything the upstream document states (methods, paths, parameters) is left to a lowerer,
 which builds a runtime's internal representation from the two.
 
-**Status: early.** Three connectors are here, [`jira`](connectors/jira.yaml),
-[`gitlab`](connectors/gitlab.yaml) and [`confluence-v1`](connectors/confluence-v1.yaml), and
-`task check` validates them. The Rust lowerer in Connectors is being built as a vertical slice; the install command
-is designed and not yet built. The design is in the
+**Status: early.** Fourteen connectors are here, one per selection the Connectors catalog ships
+([`connectors/`](connectors/)). `connectors-build definition import` in Connectors wrote each from the
+shipped selection, its bundle and the pinned source, and its lowerer gives that bundle and selection
+back; `task check` validates them. The install
+command is designed and not yet built. The design is in the
 Connectors planning store:
 `architecture-decision-record:provider-definitions-and-runtimes` and
 `architecture-design:provider-definitions-and-runtimes`.
@@ -27,7 +28,7 @@ several. A connector definition is one file in `connectors/`.
 
 | Specification | What it fixes | Where |
 |---|---|---|
-| `urn:beyond10x:connectors-definition:1` | the shape of `connectors/<id>.yaml` | [ESS source](spec/domains/definition.yaml), projected to [JSON Schema](generated/schema/types/connectors_definitions.definition.ProviderDefinition.schema.json) |
+| `urn:beyond10x:connectors-definition:1` | the shape of `connectors/<id>.yaml` | [ESS source](spec/domains/definition.yaml), projected to [JSON Schema](generated/schema/types/connectors_definitions.definition.ConnectorDefinition.schema.json) |
 | `auth.profile/v1alpha1` | what an auth profile declares | [Connectors contract](https://github.com/beyond10x/connectors/blob/main/contracts/auth/profile/v1alpha1/semantics.md) |
 | `catalog/v1alpha1` | bundles, the index and generic HTTP execution | [Connectors contract](https://github.com/beyond10x/connectors/blob/main/contracts/catalog/v1alpha1/semantics.md) |
 

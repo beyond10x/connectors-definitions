@@ -23,7 +23,7 @@ tasks:
       - |
         for f in connectors/*.yaml; do
           id=$(basename "$f" .yaml)
-          sha=$(yq '.source.sha256' "$f"); src=$(yq '.source.openapi' "$f")
+          sha=$(yq '.source.sha256' "$f"); src=$(yq '.source.openapi // .source.swagger // .source.discovery' "$f")
           test "$(gunzip -c "$src" | sha256sum | cut -d' ' -f1)" = "$sha" || { echo "$f: $src does not hash to $sha"; exit 1; }
           yq -o=json '.' "$f" > "{{.BUILD}}/instances/connector-$id.json"
         done

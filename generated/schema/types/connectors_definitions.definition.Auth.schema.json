@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
-    "contract_digest": "slice-sha256/2:e4092d4abd75f9cb5f9f3112545ee18e5f6eda7d1bbf2e1dd2ea0dcce949d1ea",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:b2e08a7af3f35087d898a2622b39e43f6186e6a0e4d71fd1e0be5f98ee542646",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -44,6 +44,12 @@
         },
         "access": {
           "$ref": "#/$defs/connectors_definitions.definition.AuthAccess"
+        },
+        "token_url": {
+          "type": "string"
+        },
+        "authorize_url": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -76,6 +82,9 @@
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
+        "source": {
+          "$ref": "#/$defs/connectors_definitions.definition.IdentitySource"
+        },
         "path": {
           "type": "string"
         },
@@ -96,7 +105,9 @@
       "enum": [
         "basic",
         "bearer",
-        "header"
+        "header",
+        "oauth2_refresh",
+        "oauth2_client_credentials"
       ]
     },
     "connectors_definitions.definition.AuthScopes": {
@@ -116,13 +127,26 @@
           "items": {
             "type": "string"
           }
+        },
+        "requested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
-      "required": [
-        "path",
-        "pointer"
-      ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.IdentitySource": {
+      "title": "IdentitySource",
+      "x-ess-name": "connectors_definitions.definition.IdentitySource",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "api",
+        "id_token",
+        "configuration"
+      ]
     }
   }
 }

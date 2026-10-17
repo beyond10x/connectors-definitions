@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
-    "contract_digest": "slice-sha256/2:cd673f649447bc1d77c1c910b6f5d9f4b3103564bc9c9e4ff3060c114ae6cba5",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:1e2db7e4beeecdbc27c7d61163c6b57fcb51f8f23e64b91aa3cef01a71466a5e",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -18,13 +18,18 @@
         "before": {
           "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
         },
+        "also": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
+          }
+        },
         "after": {
           "$ref": "#/$defs/connectors_definitions.definition.GuardAfter"
         }
       },
       "required": [
-        "before",
-        "after"
+        "before"
       ],
       "additionalProperties": false
     },
@@ -47,11 +52,20 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "read": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardRead"
+        },
+        "absent": {
+          "type": "boolean"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardRefusal"
+          }
         }
       },
-      "required": [
-        "expect"
-      ],
       "additionalProperties": false
     },
     "connectors_definitions.definition.GuardBefore": {
@@ -79,10 +93,68 @@
         }
       },
       "required": [
-        "read",
-        "expect"
+        "read"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRead": {
+      "title": "GuardRead",
+      "x-ess-name": "connectors_definitions.definition.GuardRead",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "read"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRefusal": {
+      "title": "GuardRefusal",
+      "x-ess-name": "connectors_definitions.definition.GuardRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.RefusalCode"
+        }
+      },
+      "required": [
+        "pointer",
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.RefusalCode": {
+      "title": "RefusalCode",
+      "x-ess-name": "connectors_definitions.definition.RefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "forbidden",
+        "not_found"
+      ]
     }
   }
 }

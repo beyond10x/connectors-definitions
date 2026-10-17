@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Envelope",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:283ff37247f1a910b60170f1a1f536f96762a5eb4d68a48db9e5ef63fe9f9ffd",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Envelope": {
+      "title": "Envelope",
+      "x-ess-name": "connectors_definitions.definition.Envelope",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.EnvelopeRefusal"
+          }
+        },
+        "otherwise": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "ok",
+        "error",
+        "otherwise"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.EnvelopeCode": {
+      "title": "EnvelopeCode",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "unauthorized",
+        "forbidden",
+        "not_found",
+        "rate_limited",
+        "internal"
+      ]
+    },
+    "connectors_definitions.definition.EnvelopeRefusal": {
+      "title": "EnvelopeRefusal",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

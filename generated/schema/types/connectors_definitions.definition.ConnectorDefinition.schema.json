@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "ed0117c06481215b14411c73d2262e3d8d6c6f7d14189d76de3f67c381b4815c",
-    "contract_digest": "slice-sha256/2:7ab7ef50862f220a0aee006749c9988f7281e01c3ffdb79230b5362c8ff967fd",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:b9863bca0ff2b868208b45126d2c996b4dc9eddb44fdaea39da01ad5b1ee8fa7",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -44,6 +44,12 @@
         },
         "access": {
           "$ref": "#/$defs/connectors_definitions.definition.AuthAccess"
+        },
+        "token_url": {
+          "type": "string"
+        },
+        "authorize_url": {
+          "type": "string"
         }
       },
       "additionalProperties": false
@@ -76,6 +82,9 @@
       "x-ess-kind": "struct",
       "type": "object",
       "properties": {
+        "source": {
+          "$ref": "#/$defs/connectors_definitions.definition.IdentitySource"
+        },
         "path": {
           "type": "string"
         },
@@ -96,7 +105,9 @@
       "enum": [
         "basic",
         "bearer",
-        "header"
+        "header",
+        "oauth2_refresh",
+        "oauth2_client_credentials"
       ]
     },
     "connectors_definitions.definition.AuthScopes": {
@@ -116,12 +127,56 @@
           "items": {
             "type": "string"
           }
+        },
+        "requested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Binary": {
+      "title": "Binary",
+      "x-ess-name": "connectors_definitions.definition.Binary",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "max_bytes": {
+          "type": "integer"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
-        "path",
-        "pointer"
+        "max_bytes"
       ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Bound": {
+      "title": "Bound",
+      "x-ess-name": "connectors_definitions.definition.Bound",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "minimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
       "additionalProperties": false
     },
     "connectors_definitions.definition.ConfigField": {
@@ -166,6 +221,9 @@
         "schema": {
           "$ref": "#/$defs/connectors_definitions.definition.SchemaId"
         },
+        "catalog": {
+          "type": "string"
+        },
         "source": {
           "$ref": "#/$defs/connectors_definitions.definition.Source"
         },
@@ -193,6 +251,9 @@
           },
           "x-ess-map-key": "String"
         },
+        "defaults": {
+          "$ref": "#/$defs/connectors_definitions.definition.Defaults"
+        },
         "operations": {
           "type": "object",
           "additionalProperties": {
@@ -204,6 +265,20 @@
           "type": "object",
           "additionalProperties": {
             "$ref": "#/$defs/connectors_definitions.definition.Datasource"
+          },
+          "x-ess-map-key": "String"
+        },
+        "references": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.references.Reference"
+          },
+          "x-ess-map-key": "String"
+        },
+        "views": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.references.View"
           },
           "x-ess-map-key": "String"
         }
@@ -272,6 +347,73 @@
         "feed"
       ]
     },
+    "connectors_definitions.definition.Defaults": {
+      "title": "Defaults",
+      "x-ess-name": "connectors_definitions.definition.Defaults",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "withhold": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "credential": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bounds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.Bound"
+          },
+          "x-ess-map-key": "String"
+        },
+        "response": {
+          "$ref": "#/$defs/connectors_definitions.definition.ResponseKind"
+        },
+        "binary": {
+          "$ref": "#/$defs/connectors_definitions.definition.Binary"
+        },
+        "download": {
+          "$ref": "#/$defs/connectors_definitions.definition.Download"
+        },
+        "envelope": {
+          "$ref": "#/$defs/connectors_definitions.definition.Envelope"
+        },
+        "rate_limit_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Download": {
+      "title": "Download",
+      "x-ess-name": "connectors_definitions.definition.Download",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path_prefix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path_prefix"
+      ],
+      "additionalProperties": false
+    },
     "connectors_definitions.definition.Effect": {
       "title": "Effect",
       "x-ess-name": "connectors_definitions.definition.Effect",
@@ -281,6 +423,71 @@
         "read",
         "write"
       ]
+    },
+    "connectors_definitions.definition.Envelope": {
+      "title": "Envelope",
+      "x-ess-name": "connectors_definitions.definition.Envelope",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.EnvelopeRefusal"
+          }
+        },
+        "otherwise": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "ok",
+        "error",
+        "otherwise"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.EnvelopeCode": {
+      "title": "EnvelopeCode",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "unauthorized",
+        "forbidden",
+        "not_found",
+        "rate_limited",
+        "internal"
+      ]
+    },
+    "connectors_definitions.definition.EnvelopeRefusal": {
+      "title": "EnvelopeRefusal",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
     },
     "connectors_definitions.definition.FeedAuthor": {
       "title": "FeedAuthor",
@@ -459,13 +666,18 @@
         "before": {
           "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
         },
+        "also": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
+          }
+        },
         "after": {
           "$ref": "#/$defs/connectors_definitions.definition.GuardAfter"
         }
       },
       "required": [
-        "before",
-        "after"
+        "before"
       ],
       "additionalProperties": false
     },
@@ -488,11 +700,20 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "read": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardRead"
+        },
+        "absent": {
+          "type": "boolean"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardRefusal"
+          }
         }
       },
-      "required": [
-        "expect"
-      ],
       "additionalProperties": false
     },
     "connectors_definitions.definition.GuardBefore": {
@@ -520,10 +741,68 @@
         }
       },
       "required": [
-        "read",
-        "expect"
+        "read"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRead": {
+      "title": "GuardRead",
+      "x-ess-name": "connectors_definitions.definition.GuardRead",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "read"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRefusal": {
+      "title": "GuardRefusal",
+      "x-ess-name": "connectors_definitions.definition.GuardRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.RefusalCode"
+        }
+      },
+      "required": [
+        "pointer",
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.IdentitySource": {
+      "title": "IdentitySource",
+      "x-ess-name": "connectors_definitions.definition.IdentitySource",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "api",
+        "id_token",
+        "configuration"
+      ]
     },
     "connectors_definitions.definition.Operation": {
       "title": "Operation",
@@ -537,11 +816,51 @@
         "effect": {
           "$ref": "#/$defs/connectors_definitions.definition.Effect"
         },
-        "description": {
-          "type": "string"
-        },
         "paging": {
           "type": "string"
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "withhold": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "credential": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bounds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.Bound"
+          },
+          "x-ess-map-key": "String"
+        },
+        "response": {
+          "$ref": "#/$defs/connectors_definitions.definition.ResponseKind"
+        },
+        "binary": {
+          "$ref": "#/$defs/connectors_definitions.definition.Binary"
+        },
+        "download": {
+          "$ref": "#/$defs/connectors_definitions.definition.Download"
+        },
+        "envelope": {
+          "$ref": "#/$defs/connectors_definitions.definition.Envelope"
+        },
+        "rate_limit_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "body": {
           "type": "object",
@@ -552,11 +871,11 @@
         },
         "guard": {
           "$ref": "#/$defs/connectors_definitions.definition.Guard"
+        },
+        "description": {
+          "type": "string"
         }
       },
-      "required": [
-        "op"
-      ],
       "additionalProperties": false
     },
     "connectors_definitions.definition.PagingStyle": {
@@ -586,6 +905,28 @@
       },
       "additionalProperties": false
     },
+    "connectors_definitions.definition.RefusalCode": {
+      "title": "RefusalCode",
+      "x-ess-name": "connectors_definitions.definition.RefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "forbidden",
+        "not_found"
+      ]
+    },
+    "connectors_definitions.definition.ResponseKind": {
+      "title": "ResponseKind",
+      "x-ess-name": "connectors_definitions.definition.ResponseKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "json",
+        "text",
+        "binary"
+      ]
+    },
     "connectors_definitions.definition.SchemaId": {
       "title": "SchemaId",
       "x-ess-name": "connectors_definitions.definition.SchemaId",
@@ -611,16 +952,135 @@
         "openapi": {
           "type": "string"
         },
+        "swagger": {
+          "type": "string"
+        },
+        "discovery": {
+          "type": "string"
+        },
         "sha256": {
           "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
+        },
+        "projection": {
+          "type": "string"
         },
         "amendments": {
           "type": "string"
         }
       },
       "required": [
-        "openapi",
         "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.references.Match": {
+      "title": "Match",
+      "x-ess-name": "connectors_definitions.references.Match",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.references.Reference": {
+      "title": "Reference",
+      "x-ess-name": "connectors_definitions.references.Reference",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "match": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.references.Match"
+          }
+        },
+        "resolve": {
+          "$ref": "#/$defs/connectors_definitions.references.Resolve"
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "match",
+        "resolve"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.references.Resolve": {
+      "title": "Resolve",
+      "x-ess-name": "connectors_definitions.references.Resolve",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "operation": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "operation",
+        "with"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.references.View": {
+      "title": "View",
+      "x-ess-name": "connectors_definitions.references.View",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "of": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.references.ViewField"
+          }
+        }
+      },
+      "required": [
+        "of",
+        "fields"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.references.ViewField": {
+      "title": "ViewField",
+      "x-ess-name": "connectors_definitions.references.ViewField",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "renderer": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "pointer"
       ],
       "additionalProperties": false
     }

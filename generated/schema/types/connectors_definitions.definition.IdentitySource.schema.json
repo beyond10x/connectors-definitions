@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.IdentitySource",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "f4a26cab6210678ddc6c5e7cdb0e69fe4ccaf459f64d93eab527e83d8a596ff6",
+    "contract_digest": "slice-sha256/2:6798407f96d3aefce9fc6effc1409c01aec304cfe87aa27050dc2b7ec93aac23",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.IdentitySource": {
+      "title": "IdentitySource",
+      "x-ess-name": "connectors_definitions.definition.IdentitySource",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "api",
+        "id_token",
+        "configuration"
+      ]
+    }
+  }
+}
