@@ -18,3 +18,52 @@ operations:
   merge_request.diffs: {op: getApiV4ProjectsIdMergeRequestsMergeRequestIidDiffs}
   merge_request.discussions: {op: getApiV4ProjectsIdMergeRequestsNoteableIdDiscussions}
   merge_request.discussion.get: {op: getApiV4ProjectsIdMergeRequestsNoteableIdDiscussionsDiscussionId}
+  merge_request.create:
+    op: postApiV4ProjectsIdMergeRequests
+    effect: write
+    guard:
+      before: {read: getApiV4ProjectsIdRepositoryBranchesBranch, with: {branch: body.source_branch}, expect: {/commit/id: sha}}
+      after: {expect: {/sha: sha}}
+  merge_request.update:
+    op: putApiV4ProjectsIdMergeRequestsMergeRequestIid
+    effect: write
+    guard:
+      before: {read: merge_request.get, expect: {/sha: sha, /state: =opened}}
+      after: {expect: {/sha: sha}}
+  merge_request.merge:
+    op: putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge
+    effect: write
+    guard:
+      before:
+        read: merge_request.get
+        expect: {/sha: body.sha, /state: =opened, /detailed_merge_status: =mergeable, /head_pipeline/id: pipeline_id, /head_pipeline/status: =success}
+      after: {expect: {/state: =merged, /sha: body.sha}}
+  merge_request.auto_merge:
+    op: putApiV4ProjectsIdMergeRequestsMergeRequestIidMerge
+    effect: write
+    body: {auto_merge: "=true", sha: any}
+    guard:
+      before: {read: merge_request.get, expect: {/sha: body.sha, /state: =opened}}
+      after: {expect: {/sha: body.sha}, any: {/merge_when_pipeline_succeeds: "=true", /state: =merged}}
+  merge_request.reopen:
+    op: putApiV4ProjectsIdMergeRequestsMergeRequestIid
+    effect: write
+    body: {state_event: =reopen}
+    guard:
+      before: {read: merge_request.get, expect: {/sha: sha, /state: =closed}}
+      after: {expect: {/sha: sha, /state: =opened}}
+  merge_request.note.create:
+    op: postApiV4ProjectsIdMergeRequestsNoteableIdNotes
+    effect: write
+    body: {body: string!, internal: boolean}
+  merge_request.discussion.reply:
+    op: postApiV4ProjectsIdMergeRequestsNoteableIdDiscussionsDiscussionIdNotes
+    effect: write
+    body: {body: string!}
+  merge_request.discussion.resolve:
+    op: putApiV4ProjectsIdMergeRequestsNoteableIdDiscussionsDiscussionId
+    effect: write
+    body: {resolved: boolean}
+    guard:
+      before: {read: merge_request.discussion.get, expect: {/id: discussion_id, /resolvable: "=true"}}
+      after: {expect: {/id: discussion_id, /resolved: body.resolved}}

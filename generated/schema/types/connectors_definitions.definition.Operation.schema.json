@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "8a493184c7114a9d449da5848a45514fdf06a29c58f91da50e44603adea7ebc0",
-    "contract_digest": "slice-sha256/2:7ddd5a185998727dc47cc81d6cf4f308da38ff0242a69c25104d28f2f649e9f7",
+    "source_digest": "74b3f6af0b1524704eef96bed1e6f0ed6826f0eece87f2da6086fa5289092228",
+    "contract_digest": "slice-sha256/2:273477ec13bac434de66091cc3e1cd856084e22b87a210ea88343d99a4aef801",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -18,6 +18,81 @@
         "read",
         "write"
       ]
+    },
+    "connectors_definitions.definition.Guard": {
+      "title": "Guard",
+      "x-ess-name": "connectors_definitions.definition.Guard",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "before": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
+        },
+        "after": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardAfter"
+        }
+      },
+      "required": [
+        "before",
+        "after"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardAfter": {
+      "title": "GuardAfter",
+      "x-ess-name": "connectors_definitions.definition.GuardAfter",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "expect": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "any": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "expect"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardBefore": {
+      "title": "GuardBefore",
+      "x-ess-name": "connectors_definitions.definition.GuardBefore",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "read",
+        "expect"
+      ],
+      "additionalProperties": false
     },
     "connectors_definitions.definition.Operation": {
       "title": "Operation",
@@ -36,6 +111,16 @@
         },
         "paging": {
           "type": "string"
+        },
+        "body": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "guard": {
+          "$ref": "#/$defs/connectors_definitions.definition.Guard"
         }
       },
       "required": [

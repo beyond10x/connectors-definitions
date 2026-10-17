@@ -40,6 +40,22 @@ types:
       - {name: max, type: "Optional<Integer>"}
       - {name: total, type: "Optional<String>"}
       - {name: last, type: "Optional<String>"}
+  - name: connectors_definitions.definition.GuardBefore
+    kind: struct
+    fields:
+      - {name: read, type: String}
+      - {name: with, type: "Optional<Map<String, String>>"}
+      - {name: expect, type: "Map<String, String>"}
+  - name: connectors_definitions.definition.GuardAfter
+    kind: struct
+    fields:
+      - {name: expect, type: "Map<String, String>"}
+      - {name: any, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.definition.Guard
+    kind: struct
+    fields:
+      - {name: before, type: connectors_definitions.definition.GuardBefore}
+      - {name: after, type: connectors_definitions.definition.GuardAfter}
   - name: connectors_definitions.definition.Effect
     kind: enum
     variants: [read, write]
@@ -50,6 +66,8 @@ types:
       - {name: effect, type: "Optional<connectors_definitions.definition.Effect>"}
       - {name: description, type: "Optional<String>"}
       - {name: paging, type: "Optional<String>"}
+      - {name: body, type: "Optional<Map<String, String>>"}
+      - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
   - name: connectors_definitions.definition.ProviderDefinition
     kind: struct
     fields:
