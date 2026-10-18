@@ -1,5 +1,5 @@
 domain: connectors_definitions.definition
-summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes."
+summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes. A write's body maps each key, a top-level name or a JSON pointer, to its type, string, integer, boolean, string_list or any: a string followed by + must not be empty, a trailing ! requires the key, and =<value> sends that value fixed."
 
 types:
   - name: connectors_definitions.definition.SchemaId
@@ -85,12 +85,16 @@ types:
       - {name: max, type: "Optional<Integer>"}
       - {name: total, type: "Optional<String>"}
       - {name: last, type: "Optional<String>"}
+  - name: connectors_definitions.definition.MismatchCode
+    kind: enum
+    variants: [conflict]
   - name: connectors_definitions.definition.GuardBefore
     kind: struct
     fields:
       - {name: read, type: String}
       - {name: with, type: "Optional<Map<String, String>>"}
       - {name: expect, type: "Optional<Map<String, String>>"}
+      - {name: mismatch, type: "Optional<connectors_definitions.definition.MismatchCode>"}
   - name: connectors_definitions.definition.GuardRead
     kind: struct
     fields:
@@ -201,6 +205,10 @@ types:
       - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
       - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
       - {name: body, type: "Optional<Map<String, String>>"}
+      - {name: body_enums, type: "Optional<Map<String, List<String>>>"}
+      - {name: body_any_of, type: "Optional<List<String>>"}
+      - {name: body_prefixes, type: "Optional<Map<String, String>>"}
+      - {name: conflict_status, type: "Optional<Integer>"}
       - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
       - {name: description, type: "Optional<String>"}
   - name: connectors_definitions.definition.DatasourceKind

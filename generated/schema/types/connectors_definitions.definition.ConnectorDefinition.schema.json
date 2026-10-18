@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
-    "contract_digest": "slice-sha256/2:189cae487adc741378c60f4b50bc79c91cc6372483847e3b0284c14c5c6ff6fd",
+    "source_digest": "98ec26539fcf47214f6c65bef3e3f288ccf42b634540dc386f795fadf232ae45",
+    "contract_digest": "slice-sha256/2:3715075f8b03466f0133e06dbbf799384eddde0f91593c9960c282fe742d208b",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -776,6 +776,9 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "mismatch": {
+          "$ref": "#/$defs/connectors_definitions.definition.MismatchCode"
         }
       },
       "required": [
@@ -840,6 +843,15 @@
         "api",
         "id_token",
         "configuration"
+      ]
+    },
+    "connectors_definitions.definition.MismatchCode": {
+      "title": "MismatchCode",
+      "x-ess-name": "connectors_definitions.definition.MismatchCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "conflict"
       ]
     },
     "connectors_definitions.definition.Operation": {
@@ -915,6 +927,32 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "body_enums": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "x-ess-map-key": "String"
+        },
+        "body_any_of": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "body_prefixes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "conflict_status": {
+          "type": "integer"
         },
         "guard": {
           "$ref": "#/$defs/connectors_definitions.definition.Guard"
