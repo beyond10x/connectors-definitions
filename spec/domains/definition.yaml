@@ -1,0 +1,277 @@
+domain: connectors_definitions.definition
+summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes."
+
+types:
+  - name: connectors_definitions.definition.SchemaId
+    kind: enum
+    variants: ["urn:beyond10x:connectors-definition:1"]
+  - name: connectors_definitions.definition.Sha256Hex
+    kind: newtype
+    of: String
+    alphabet: "0123456789abcdef"
+  - name: connectors_definitions.definition.Source
+    kind: struct
+    fields:
+      - {name: openapi, type: "Optional<String>"}
+      - {name: swagger, type: "Optional<String>"}
+      - {name: discovery, type: "Optional<String>"}
+      - {name: sha256, type: connectors_definitions.definition.Sha256Hex}
+      - {name: projection, type: "Optional<String>"}
+      - {name: amendments, type: "Optional<String>"}
+  - name: connectors_definitions.definition.ConfigType
+    kind: enum
+    variants: [string]
+  - name: connectors_definitions.definition.ConfigField
+    kind: struct
+    fields:
+      - {name: type, type: connectors_definitions.definition.ConfigType}
+      - {name: default, type: "Optional<String>"}
+      - {name: values, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.AuthScheme
+    kind: enum
+    variants: [basic, bearer, header, oauth2_refresh, oauth2_client_credentials]
+  - name: connectors_definitions.definition.IdentitySource
+    kind: enum
+    variants: [api, id_token, configuration]
+  - name: connectors_definitions.definition.AuthIdentity
+    kind: struct
+    fields:
+      - {name: source, type: "Optional<connectors_definitions.definition.IdentitySource>"}
+      - {name: path, type: "Optional<String>"}
+      - {name: kind, type: "Optional<String>"}
+      - {name: subject, type: "Optional<String>"}
+  - name: connectors_definitions.definition.AuthScopes
+    kind: struct
+    fields:
+      - {name: path, type: "Optional<String>"}
+      - {name: pointer, type: "Optional<String>"}
+      - {name: minimum, type: "Optional<List<String>>"}
+      - {name: requested, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.AuthAccess
+    kind: struct
+    fields:
+      - {name: path, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.definition.Auth
+    kind: struct
+    fields:
+      - {name: use, type: "Optional<String>"}
+      - {name: default, type: "Optional<Boolean>"}
+      - {name: scheme, type: "Optional<connectors_definitions.definition.AuthScheme>"}
+      - {name: header, type: "Optional<String>"}
+      - {name: prefix, type: "Optional<String>"}
+      - {name: label, type: "Optional<String>"}
+      - {name: account_label, type: "Optional<String>"}
+      - {name: identity, type: "Optional<connectors_definitions.definition.AuthIdentity>"}
+      - {name: scopes, type: "Optional<connectors_definitions.definition.AuthScopes>"}
+      - {name: access, type: "Optional<connectors_definitions.definition.AuthAccess>"}
+      - {name: evidence_lifetime_ms, type: "Optional<Integer>"}
+      - {name: token_url, type: "Optional<String>"}
+      - {name: authorize_url, type: "Optional<String>"}
+  - name: connectors_definitions.definition.AuthLibraryId
+    kind: enum
+    variants: ["urn:beyond10x:connectors-auth:1"]
+  - name: connectors_definitions.definition.AuthLibrary
+    kind: struct
+    fields:
+      - {name: schema, type: connectors_definitions.definition.AuthLibraryId}
+      - {name: profiles, type: "Map<String, connectors_definitions.definition.Auth>"}
+  - name: connectors_definitions.definition.PagingStyle
+    kind: struct
+    fields:
+      - {name: request, type: "Optional<String>"}
+      - {name: next, type: "Optional<String>"}
+      - {name: limit, type: "Optional<String>"}
+      - {name: max, type: "Optional<Integer>"}
+      - {name: total, type: "Optional<String>"}
+      - {name: last, type: "Optional<String>"}
+  - name: connectors_definitions.definition.GuardBefore
+    kind: struct
+    fields:
+      - {name: read, type: String}
+      - {name: with, type: "Optional<Map<String, String>>"}
+      - {name: expect, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.definition.GuardRead
+    kind: struct
+    fields:
+      - {name: read, type: String}
+      - {name: with, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.definition.RefusalCode
+    kind: enum
+    variants: [invalid_input, forbidden, not_found]
+  - name: connectors_definitions.definition.GuardRefusal
+    kind: struct
+    fields:
+      - {name: pointer, type: String}
+      - {name: values, type: "List<String>"}
+      - {name: code, type: connectors_definitions.definition.RefusalCode}
+  - name: connectors_definitions.definition.GuardAfter
+    kind: struct
+    fields:
+      - {name: expect, type: "Optional<Map<String, String>>"}
+      - {name: any, type: "Optional<Map<String, String>>"}
+      - {name: read, type: "Optional<connectors_definitions.definition.GuardRead>"}
+      - {name: absent, type: "Optional<Boolean>"}
+      - {name: refusals, type: "Optional<List<connectors_definitions.definition.GuardRefusal>>"}
+  - name: connectors_definitions.definition.Guard
+    kind: struct
+    fields:
+      - {name: before, type: connectors_definitions.definition.GuardBefore}
+      - {name: also, type: "Optional<List<connectors_definitions.definition.GuardBefore>>"}
+      - {name: after, type: "Optional<connectors_definitions.definition.GuardAfter>"}
+  - name: connectors_definitions.definition.Effect
+    kind: enum
+    variants: [read, write]
+  - name: connectors_definitions.definition.ResponseKind
+    kind: enum
+    variants: [json, text, binary]
+  - name: connectors_definitions.definition.Binary
+    kind: struct
+    fields:
+      - {name: max_bytes, type: Integer}
+      - {name: hosts, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.Download
+    kind: struct
+    fields:
+      - {name: path_prefix, type: String}
+  - name: connectors_definitions.definition.EnvelopeCode
+    kind: enum
+    variants: [invalid_input, unauthorized, forbidden, not_found, rate_limited, internal]
+  - name: connectors_definitions.definition.EnvelopeRefusal
+    kind: struct
+    fields:
+      - {name: values, type: "List<String>"}
+      - {name: code, type: connectors_definitions.definition.EnvelopeCode}
+  - name: connectors_definitions.definition.Envelope
+    kind: struct
+    fields:
+      - {name: ok, type: String}
+      - {name: error, type: String}
+      - {name: refusals, type: "Optional<List<connectors_definitions.definition.EnvelopeRefusal>>"}
+      - {name: otherwise, type: connectors_definitions.definition.EnvelopeCode}
+  - name: connectors_definitions.definition.TextRefusalCode
+    kind: enum
+    variants: [capacity]
+  - name: connectors_definitions.definition.TextRefusal
+    kind: struct
+    fields:
+      - {name: pointers, type: "List<String>"}
+      - {name: contains, type: "List<String>"}
+      - {name: code, type: connectors_definitions.definition.TextRefusalCode}
+  - name: connectors_definitions.definition.Custody
+    kind: struct
+    fields:
+      - {name: secret, type: String}
+      - {name: returns, type: "Map<String, String>"}
+  - name: connectors_definitions.definition.Bound
+    kind: struct
+    fields:
+      - {name: minimum, type: "Optional<Integer>"}
+      - {name: maximum, type: "Optional<Integer>"}
+      - {name: values, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.Defaults
+    kind: struct
+    fields:
+      - {name: required, type: "Optional<List<String>>"}
+      - {name: withhold, type: "Optional<List<String>>"}
+      - {name: credential, type: "Optional<List<String>>"}
+      - {name: bounds, type: "Optional<Map<String, connectors_definitions.definition.Bound>>"}
+      - {name: response, type: "Optional<connectors_definitions.definition.ResponseKind>"}
+      - {name: binary, type: "Optional<connectors_definitions.definition.Binary>"}
+      - {name: download, type: "Optional<connectors_definitions.definition.Download>"}
+      - {name: envelope, type: "Optional<connectors_definitions.definition.Envelope>"}
+      - {name: rate_limit_reasons, type: "Optional<List<String>>"}
+      - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
+      - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
+  - name: connectors_definitions.definition.Operation
+    kind: struct
+    fields:
+      - {name: op, type: "Optional<String>"}
+      - {name: effect, type: "Optional<connectors_definitions.definition.Effect>"}
+      - {name: paging, type: "Optional<String>"}
+      - {name: required, type: "Optional<List<String>>"}
+      - {name: withhold, type: "Optional<List<String>>"}
+      - {name: credential, type: "Optional<List<String>>"}
+      - {name: bounds, type: "Optional<Map<String, connectors_definitions.definition.Bound>>"}
+      - {name: response, type: "Optional<connectors_definitions.definition.ResponseKind>"}
+      - {name: binary, type: "Optional<connectors_definitions.definition.Binary>"}
+      - {name: download, type: "Optional<connectors_definitions.definition.Download>"}
+      - {name: envelope, type: "Optional<connectors_definitions.definition.Envelope>"}
+      - {name: rate_limit_reasons, type: "Optional<List<String>>"}
+      - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
+      - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
+      - {name: body, type: "Optional<Map<String, String>>"}
+      - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
+      - {name: description, type: "Optional<String>"}
+  - name: connectors_definitions.definition.DatasourceKind
+    kind: enum
+    variants: [feed]
+  - name: connectors_definitions.definition.FeedCursor
+    kind: struct
+    fields:
+      - {name: parameter, type: String}
+      - {name: next, type: "Optional<String>"}
+      - {name: last, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedContainers
+    kind: struct
+    fields:
+      - {name: list, type: String}
+      - {name: lookup, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
+      - {name: cursor, type: connectors_definitions.definition.FeedCursor}
+      - {name: records, type: "Optional<String>"}
+      - {name: id, type: String}
+      - {name: name, type: "Optional<String>"}
+      - {name: kind_word, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedPosition
+    kind: struct
+    fields:
+      - {name: time, type: String}
+  - name: connectors_definitions.definition.FeedAuthor
+    kind: struct
+    fields:
+      - {name: id, type: String}
+      - {name: display_name, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedBody
+    kind: struct
+    fields:
+      - {name: pointer, type: String}
+      - {name: representation, type: String}
+  - name: connectors_definitions.definition.FeedItems
+    kind: struct
+    fields:
+      - {name: list, type: String}
+      - {name: query, type: "Optional<Map<String, String>>"}
+      - {name: position, type: connectors_definitions.definition.FeedPosition}
+      - {name: records, type: "Optional<String>"}
+      - {name: id, type: String}
+      - {name: revision, type: String}
+      - {name: created_at, type: String}
+      - {name: updated_at, type: String}
+      - {name: author, type: "Optional<connectors_definitions.definition.FeedAuthor>"}
+      - {name: body, type: connectors_definitions.definition.FeedBody}
+  - name: connectors_definitions.definition.Datasource
+    kind: struct
+    fields:
+      - {name: kind, type: connectors_definitions.definition.DatasourceKind}
+      - {name: profile, type: String}
+      - {name: capabilities, type: "Map<String, String>"}
+      - {name: containers, type: connectors_definitions.definition.FeedContainers}
+      - {name: items, type: connectors_definitions.definition.FeedItems}
+      - {name: filters, type: "Optional<Map<String, Map<String, String>>>"}
+  - name: connectors_definitions.definition.ConnectorDefinition
+    kind: struct
+    fields:
+      - {name: schema, type: connectors_definitions.definition.SchemaId}
+      - {name: id, type: "Optional<String>"}
+      - {name: catalog, type: "Optional<String>"}
+      - {name: source, type: connectors_definitions.definition.Source}
+      - {name: base_url, type: String}
+      - {name: config, type: "Optional<Map<String, connectors_definitions.definition.ConfigField>>"}
+      - {name: auth, type: "Map<String, connectors_definitions.definition.Auth>"}
+      - {name: paging, type: "Optional<Map<String, connectors_definitions.definition.PagingStyle>>"}
+      - {name: defaults, type: "Optional<connectors_definitions.definition.Defaults>"}
+      - {name: operations, type: "Map<String, connectors_definitions.definition.Operation>"}
+      - {name: datasources, type: "Optional<Map<String, connectors_definitions.definition.Datasource>>"}
+      - {name: references, type: "Optional<Map<String, connectors_definitions.references.Reference>>"}
+      - {name: views, type: "Optional<Map<String, connectors_definitions.references.View>>"}

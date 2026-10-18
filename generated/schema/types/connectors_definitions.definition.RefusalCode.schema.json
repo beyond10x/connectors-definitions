@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.RefusalCode",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:2d2f09a6e336ef58593763a46a1e123ea8f12d17d0d4a6eeb697e9cbe7c876fb",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.RefusalCode": {
+      "title": "RefusalCode",
+      "x-ess-name": "connectors_definitions.definition.RefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "forbidden",
+        "not_found"
+      ]
+    }
+  }
+}

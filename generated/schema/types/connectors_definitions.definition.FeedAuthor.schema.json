@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedAuthor",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:ab2936491d181267c136d4c725b708b833a0950eede757df41156e5cf6a5d592",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedAuthor": {
+      "title": "FeedAuthor",
+      "x-ess-name": "connectors_definitions.definition.FeedAuthor",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

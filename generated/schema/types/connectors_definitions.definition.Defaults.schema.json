@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Defaults",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:518e2e739405445fec6348ee12890b66166e8622939b8b9952f887030d58c3d9",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Binary": {
+      "title": "Binary",
+      "x-ess-name": "connectors_definitions.definition.Binary",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "max_bytes": {
+          "type": "integer"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "max_bytes"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Bound": {
+      "title": "Bound",
+      "x-ess-name": "connectors_definitions.definition.Bound",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "minimum": {
+          "type": "integer"
+        },
+        "maximum": {
+          "type": "integer"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Custody": {
+      "title": "Custody",
+      "x-ess-name": "connectors_definitions.definition.Custody",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "secret": {
+          "type": "string"
+        },
+        "returns": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "secret",
+        "returns"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Defaults": {
+      "title": "Defaults",
+      "x-ess-name": "connectors_definitions.definition.Defaults",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "withhold": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "credential": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bounds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.Bound"
+          },
+          "x-ess-map-key": "String"
+        },
+        "response": {
+          "$ref": "#/$defs/connectors_definitions.definition.ResponseKind"
+        },
+        "binary": {
+          "$ref": "#/$defs/connectors_definitions.definition.Binary"
+        },
+        "download": {
+          "$ref": "#/$defs/connectors_definitions.definition.Download"
+        },
+        "envelope": {
+          "$ref": "#/$defs/connectors_definitions.definition.Envelope"
+        },
+        "rate_limit_reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refusal_texts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.TextRefusal"
+          }
+        },
+        "custody": {
+          "$ref": "#/$defs/connectors_definitions.definition.Custody"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Download": {
+      "title": "Download",
+      "x-ess-name": "connectors_definitions.definition.Download",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path_prefix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path_prefix"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.Envelope": {
+      "title": "Envelope",
+      "x-ess-name": "connectors_definitions.definition.Envelope",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.EnvelopeRefusal"
+          }
+        },
+        "otherwise": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "ok",
+        "error",
+        "otherwise"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.EnvelopeCode": {
+      "title": "EnvelopeCode",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "unauthorized",
+        "forbidden",
+        "not_found",
+        "rate_limited",
+        "internal"
+      ]
+    },
+    "connectors_definitions.definition.EnvelopeRefusal": {
+      "title": "EnvelopeRefusal",
+      "x-ess-name": "connectors_definitions.definition.EnvelopeRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.EnvelopeCode"
+        }
+      },
+      "required": [
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.ResponseKind": {
+      "title": "ResponseKind",
+      "x-ess-name": "connectors_definitions.definition.ResponseKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "json",
+        "text",
+        "binary"
+      ]
+    },
+    "connectors_definitions.definition.TextRefusal": {
+      "title": "TextRefusal",
+      "x-ess-name": "connectors_definitions.definition.TextRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contains": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.TextRefusalCode"
+        }
+      },
+      "required": [
+        "pointers",
+        "contains",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.TextRefusalCode": {
+      "title": "TextRefusalCode",
+      "x-ess-name": "connectors_definitions.definition.TextRefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "capacity"
+      ]
+    }
+  }
+}

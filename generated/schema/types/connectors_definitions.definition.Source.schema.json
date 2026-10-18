@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Source",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:e618bb6e278c6263b54f46fe3b11d7c16616abace9c8dde2c775f778ac011bb0",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Sha256Hex": {
+      "title": "Sha256Hex",
+      "x-ess-name": "connectors_definitions.definition.Sha256Hex",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "x-ess-alphabet": "0123456789abcdef"
+    },
+    "connectors_definitions.definition.Source": {
+      "title": "Source",
+      "x-ess-name": "connectors_definitions.definition.Source",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "openapi": {
+          "type": "string"
+        },
+        "swagger": {
+          "type": "string"
+        },
+        "discovery": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/connectors_definitions.definition.Sha256Hex"
+        },
+        "projection": {
+          "type": "string"
+        },
+        "amendments": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "sha256"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.DatasourceKind",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:024b8a04245f82337e08cac3a2e4d9ff56b486359a3c0edae82bc2fdcd14f50b",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.DatasourceKind": {
+      "title": "DatasourceKind",
+      "x-ess-name": "connectors_definitions.definition.DatasourceKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "feed"
+      ]
+    }
+  }
+}
