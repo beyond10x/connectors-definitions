@@ -65,6 +65,7 @@ types:
       - {name: identity, type: "Optional<connectors_definitions.definition.AuthIdentity>"}
       - {name: scopes, type: "Optional<connectors_definitions.definition.AuthScopes>"}
       - {name: access, type: "Optional<connectors_definitions.definition.AuthAccess>"}
+      - {name: evidence_lifetime_ms, type: "Optional<Integer>"}
       - {name: token_url, type: "Optional<String>"}
       - {name: authorize_url, type: "Optional<String>"}
   - name: connectors_definitions.definition.AuthLibraryId

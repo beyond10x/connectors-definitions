@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "d68743cc24e1425bf47d9281d13bd184498a9f595269faf766f7145f9395fca4",
-    "contract_digest": "slice-sha256/2:25f361c78537da477142d06044288806b729f2b259ba9a96d7a5498abe807f7b",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:e09e2128d9bcbde44f332000b0b3a1789049a7a2eff28ffc35071d0702bd79ec",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -44,6 +44,9 @@
         },
         "access": {
           "$ref": "#/$defs/connectors_definitions.definition.AuthAccess"
+        },
+        "evidence_lifetime_ms": {
+          "type": "integer"
         },
         "token_url": {
           "type": "string"
