@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Guard",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:7acef86b7523822f4b88762e9f93e843b5549d0182307a7d16dd6a1b2c651667",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Guard": {
+      "title": "Guard",
+      "x-ess-name": "connectors_definitions.definition.Guard",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "before": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
+        },
+        "also": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardBefore"
+          }
+        },
+        "after": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardAfter"
+        }
+      },
+      "required": [
+        "before"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardAfter": {
+      "title": "GuardAfter",
+      "x-ess-name": "connectors_definitions.definition.GuardAfter",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "expect": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "any": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "read": {
+          "$ref": "#/$defs/connectors_definitions.definition.GuardRead"
+        },
+        "absent": {
+          "type": "boolean"
+        },
+        "refusals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.definition.GuardRefusal"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardBefore": {
+      "title": "GuardBefore",
+      "x-ess-name": "connectors_definitions.definition.GuardBefore",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "expect": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "read"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRead": {
+      "title": "GuardRead",
+      "x-ess-name": "connectors_definitions.definition.GuardRead",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "read": {
+          "type": "string"
+        },
+        "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "read"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.GuardRefusal": {
+      "title": "GuardRefusal",
+      "x-ess-name": "connectors_definitions.definition.GuardRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.RefusalCode"
+        }
+      },
+      "required": [
+        "pointer",
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.RefusalCode": {
+      "title": "RefusalCode",
+      "x-ess-name": "connectors_definitions.definition.RefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "forbidden",
+        "not_found"
+      ]
+    }
+  }
+}

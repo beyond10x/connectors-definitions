@@ -1,0 +1,42 @@
+schema: urn:beyond10x:connectors-definition:1
+source:
+  openapi: upstream/gitlab/openapi_v3.yaml.gz
+  sha256: f9e830bd3d2b99c49d60a7713fe1a64f5164418aca24b559287daab075beb530
+  amendments: upstream/gitlab/openapi_v3.amendments.json
+base_url: https://{hostname}
+auth:
+  token: {scheme: http, header: PRIVATE-TOKEN}
+  oauth2: {discovery: rfc8414}
+paging:
+  offset: {default: true, request: page, next: header:x-next-page, limit: per_page, max: 100}
+  keyset: {query: {pagination: keyset}, next: header:link}
+operations:
+  project.get: getApiV4ProjectsId
+  projects.list: getApiV4Projects
+  merge_requests.list: getApiV4ProjectsIdMergeRequests
+  merge_request.get: getApiV4ProjectsIdMergeRequestsMergeRequestIid
+  commits.list: {operation_id: getApiV4ProjectsIdRepositoryCommits, paging: keyset, hide: [pagination, page_token]}
+  job.trace: {operation_id: getApiV4ProjectsIdJobsJobIdTrace, response: text}
+  merge_request.update:
+    operation_id: putApiV4ProjectsIdMergeRequestsMergeRequestIid
+    guard:
+      before: {operation: merge_request.get, expect: {/sha: sha, /state: =opened}}
+      after: {expect: {/sha: sha}}
+  merge_request.reopen:
+    operation_id: putApiV4ProjectsIdMergeRequestsMergeRequestIid
+    guard:
+      before: {operation: merge_request.get, expect: {/sha: sha, /state: =closed}}
+  merge_request.note.create:
+    operation_id: postApiV4ProjectsIdMergeRequestsNoteableIdNotes
+    body: {body: string!, internal: boolean}
+datasources:
+  merge_requests:
+    kind: feed
+    containers: {operation: projects.list, query: {membership: true, order_by: id, sort: asc}, cursor: {id_after: /id}, id: /id, name: /name_with_namespace}
+    items:
+      operation: merge_requests.list
+      query: {order_by: updated_at, sort: asc, state: all, scope: all}
+      position: {updated_after: time}
+      map: {id: /iid, revision: /updated_at, created_at: /created_at, author: /author/name, body: /description}
+    filters:
+      mine_open: {state: opened, scope: assigned_to_me}

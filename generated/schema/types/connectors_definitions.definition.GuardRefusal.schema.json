@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.GuardRefusal",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:60daedb508bfa230667eac39b2e9f1fac53f1c586f15e6399fde890749f17c8f",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.GuardRefusal": {
+      "title": "GuardRefusal",
+      "x-ess-name": "connectors_definitions.definition.GuardRefusal",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "code": {
+          "$ref": "#/$defs/connectors_definitions.definition.RefusalCode"
+        }
+      },
+      "required": [
+        "pointer",
+        "values",
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.RefusalCode": {
+      "title": "RefusalCode",
+      "x-ess-name": "connectors_definitions.definition.RefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "invalid_input",
+        "forbidden",
+        "not_found"
+      ]
+    }
+  }
+}

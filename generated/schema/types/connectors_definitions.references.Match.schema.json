@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.references.Match",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:f14e61b03b2cb3d818dbb46bea4bbe6e2bf662a04bf120116d0ee8a15ca28c0c",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.references.Match": {
+      "title": "Match",
+      "x-ess-name": "connectors_definitions.references.Match",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

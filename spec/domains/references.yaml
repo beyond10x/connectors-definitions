@@ -1,0 +1,31 @@
+domain: connectors_definitions.references
+summary: References a connector recognizes in text and URLs, how each resolves to an item through a read operation, and the named outputs and views of that item. Semantics in beyond10x/connectors contracts/references/v1alpha1.
+
+types:
+  - name: connectors_definitions.references.Match
+    kind: struct
+    fields:
+      - {name: url, type: "Optional<String>"}
+      - {name: pattern, type: "Optional<String>"}
+  - name: connectors_definitions.references.Resolve
+    kind: struct
+    fields:
+      - {name: operation, type: String}
+      - {name: with, type: "Map<String, String>"}
+  - name: connectors_definitions.references.Reference
+    kind: struct
+    fields:
+      - {name: match, type: "List<connectors_definitions.references.Match>"}
+      - {name: resolve, type: connectors_definitions.references.Resolve}
+      - {name: outputs, type: "Optional<Map<String, String>>"}
+  - name: connectors_definitions.references.ViewField
+    kind: struct
+    fields:
+      - {name: label, type: String}
+      - {name: pointer, type: String}
+      - {name: renderer, type: "Optional<String>"}
+  - name: connectors_definitions.references.View
+    kind: struct
+    fields:
+      - {name: of, type: String}
+      - {name: fields, type: "List<connectors_definitions.references.ViewField>"}

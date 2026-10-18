@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Download",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:076ce912fd32b7db83496e95ce4852bfa630ddaaa225a1b03591efaa2f9dd860",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Download": {
+      "title": "Download",
+      "x-ess-name": "connectors_definitions.definition.Download",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path_prefix": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path_prefix"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

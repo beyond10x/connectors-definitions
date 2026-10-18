@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.TextRefusalCode",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:a28233db002320dd9d7986f11885f95f9eb16d225037c74ed4101a60983a5006",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.TextRefusalCode": {
+      "title": "TextRefusalCode",
+      "x-ess-name": "connectors_definitions.definition.TextRefusalCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "capacity"
+      ]
+    }
+  }
+}

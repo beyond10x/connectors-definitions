@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.Auth",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:e09e2128d9bcbde44f332000b0b3a1789049a7a2eff28ffc35071d0702bd79ec",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.Auth": {
+      "title": "Auth",
+      "x-ess-name": "connectors_definitions.definition.Auth",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "use": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "scheme": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthScheme"
+        },
+        "header": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "account_label": {
+          "type": "string"
+        },
+        "identity": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthIdentity"
+        },
+        "scopes": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthScopes"
+        },
+        "access": {
+          "$ref": "#/$defs/connectors_definitions.definition.AuthAccess"
+        },
+        "evidence_lifetime_ms": {
+          "type": "integer"
+        },
+        "token_url": {
+          "type": "string"
+        },
+        "authorize_url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthAccess": {
+      "title": "AuthAccess",
+      "x-ess-name": "connectors_definitions.definition.AuthAccess",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "query": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthIdentity": {
+      "title": "AuthIdentity",
+      "x-ess-name": "connectors_definitions.definition.AuthIdentity",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "source": {
+          "$ref": "#/$defs/connectors_definitions.definition.IdentitySource"
+        },
+        "path": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.AuthScheme": {
+      "title": "AuthScheme",
+      "x-ess-name": "connectors_definitions.definition.AuthScheme",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "basic",
+        "bearer",
+        "header",
+        "oauth2_refresh",
+        "oauth2_client_credentials"
+      ]
+    },
+    "connectors_definitions.definition.AuthScopes": {
+      "title": "AuthScopes",
+      "x-ess-name": "connectors_definitions.definition.AuthScopes",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "pointer": {
+          "type": "string"
+        },
+        "minimum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.IdentitySource": {
+      "title": "IdentitySource",
+      "x-ess-name": "connectors_definitions.definition.IdentitySource",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "api",
+        "id_token",
+        "configuration"
+      ]
+    }
+  }
+}

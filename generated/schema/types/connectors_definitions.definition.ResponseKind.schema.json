@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.ResponseKind",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
+    "contract_digest": "slice-sha256/2:55b84e84ef44e4f63b2601c4269aa22a81dbddd6bdbb7b36afb2b86ebcff075a",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.ResponseKind": {
+      "title": "ResponseKind",
+      "x-ess-name": "connectors_definitions.definition.ResponseKind",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "json",
+        "text",
+        "binary"
+      ]
+    }
+  }
+}
