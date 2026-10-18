@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
-    "contract_digest": "slice-sha256/2:7acef86b7523822f4b88762e9f93e843b5549d0182307a7d16dd6a1b2c651667",
+    "source_digest": "98ec26539fcf47214f6c65bef3e3f288ccf42b634540dc386f795fadf232ae45",
+    "contract_digest": "slice-sha256/2:410db00f9cf36a1f65eb30471ce5ceb09a597e670360608a5bee9d895a00b4c5",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -90,6 +90,9 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "mismatch": {
+          "$ref": "#/$defs/connectors_definitions.definition.MismatchCode"
         }
       },
       "required": [
@@ -144,6 +147,15 @@
         "code"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.MismatchCode": {
+      "title": "MismatchCode",
+      "x-ess-name": "connectors_definitions.definition.MismatchCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "conflict"
+      ]
     },
     "connectors_definitions.definition.RefusalCode": {
       "title": "RefusalCode",
