@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "7c4902bf959106c75a19e2a110dadf846ffef87f44de67e6c479a3025c5f5762",
-    "contract_digest": "slice-sha256/2:ccb0ab01a31d6aae5dc613ff89baada258f2112b1e8083ee745c8ce8494e2892",
+    "source_digest": "98ec26539fcf47214f6c65bef3e3f288ccf42b634540dc386f795fadf232ae45",
+    "contract_digest": "slice-sha256/2:c29e8c9945c3d4814e62627ddf8933e750ad7feeb2465dda7c2bcea214ad4efc",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -31,12 +31,24 @@
             "type": "string"
           },
           "x-ess-map-key": "String"
+        },
+        "mismatch": {
+          "$ref": "#/$defs/connectors_definitions.definition.MismatchCode"
         }
       },
       "required": [
         "read"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.MismatchCode": {
+      "title": "MismatchCode",
+      "x-ess-name": "connectors_definitions.definition.MismatchCode",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "conflict"
+      ]
     }
   }
 }
