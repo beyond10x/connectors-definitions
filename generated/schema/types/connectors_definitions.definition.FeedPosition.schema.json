@@ -4,11 +4,33 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "98ec26539fcf47214f6c65bef3e3f288ccf42b634540dc386f795fadf232ae45",
-    "contract_digest": "slice-sha256/2:d6b246cae1833e41df9df945e0990981a82ad3bb3f0f3836740598951e1397ec",
+    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
+    "contract_digest": "slice-sha256/2:e5e3f0ac33b91ad51dad76a01e4d3460ac793911c08e87bcd67aaf2779f847ac",
     "regenerate": "ess generate"
   },
   "$defs": {
+    "connectors_definitions.definition.FeedPage": {
+      "title": "FeedPage",
+      "x-ess-name": "connectors_definitions.definition.FeedPage",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "url_parameter": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter",
+        "next"
+      ],
+      "additionalProperties": false
+    },
     "connectors_definitions.definition.FeedPosition": {
       "title": "FeedPosition",
       "x-ess-name": "connectors_definitions.definition.FeedPosition",
@@ -17,10 +39,85 @@
       "properties": {
         "time": {
           "type": "string"
+        },
+        "query": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedQuery"
+        },
+        "precision": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedPrecision"
+        },
+        "page": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedPage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedPrecision": {
+      "title": "FeedPrecision",
+      "x-ess-name": "connectors_definitions.definition.FeedPrecision",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "instant",
+        "minute"
+      ]
+    },
+    "connectors_definitions.definition.FeedQuery": {
+      "title": "FeedQuery",
+      "x-ess-name": "connectors_definitions.definition.FeedQuery",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "language": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedQueryLanguage"
+        },
+        "first": {
+          "type": "string"
+        },
+        "resume": {
+          "type": "string"
+        },
+        "utc_offsets": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedUtcOffsets"
         }
       },
       "required": [
-        "time"
+        "parameter",
+        "language",
+        "first",
+        "resume"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedQueryLanguage": {
+      "title": "FeedQueryLanguage",
+      "x-ess-name": "connectors_definitions.definition.FeedQueryLanguage",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "jql",
+        "cql"
+      ]
+    },
+    "connectors_definitions.definition.FeedUtcOffsets": {
+      "title": "FeedUtcOffsets",
+      "x-ess-name": "connectors_definitions.definition.FeedUtcOffsets",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "least": {
+          "type": "integer"
+        },
+        "greatest": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "least",
+        "greatest"
       ],
       "additionalProperties": false
     }

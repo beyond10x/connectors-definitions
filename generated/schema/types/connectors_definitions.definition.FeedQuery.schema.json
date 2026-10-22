@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedQuery",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
+    "contract_digest": "slice-sha256/2:7a614b6962c8ba8c73ce2e293c6b5370f53a63a936715810f8b3e8f120710713",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedQuery": {
+      "title": "FeedQuery",
+      "x-ess-name": "connectors_definitions.definition.FeedQuery",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "language": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedQueryLanguage"
+        },
+        "first": {
+          "type": "string"
+        },
+        "resume": {
+          "type": "string"
+        },
+        "utc_offsets": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedUtcOffsets"
+        }
+      },
+      "required": [
+        "parameter",
+        "language",
+        "first",
+        "resume"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedQueryLanguage": {
+      "title": "FeedQueryLanguage",
+      "x-ess-name": "connectors_definitions.definition.FeedQueryLanguage",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "jql",
+        "cql"
+      ]
+    },
+    "connectors_definitions.definition.FeedUtcOffsets": {
+      "title": "FeedUtcOffsets",
+      "x-ess-name": "connectors_definitions.definition.FeedUtcOffsets",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "least": {
+          "type": "integer"
+        },
+        "greatest": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "least",
+        "greatest"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
