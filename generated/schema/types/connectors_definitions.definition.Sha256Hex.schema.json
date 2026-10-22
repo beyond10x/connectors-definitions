@@ -14,6 +14,7 @@
       "x-ess-name": "connectors_definitions.definition.Sha256Hex",
       "x-ess-kind": "newtype",
       "type": "string",
+      "pattern": "^[0-9a-f]*$",
       "x-ess-alphabet": "0123456789abcdef"
     }
   }
