@@ -4,11 +4,28 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "98ec26539fcf47214f6c65bef3e3f288ccf42b634540dc386f795fadf232ae45",
-    "contract_digest": "slice-sha256/2:12f7f86c472d0ad96749d9acc1c17379132359fefd280177c9caa542ec9a8c4b",
+    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
+    "contract_digest": "slice-sha256/2:8fe6a0da4d4515ca6f58a1817ed68c5e36dc48969aa154f96a72ad8a37c8e2de",
     "regenerate": "ess generate"
   },
   "$defs": {
+    "connectors_definitions.definition.FeedCondition": {
+      "title": "FeedCondition",
+      "x-ess-name": "connectors_definitions.definition.FeedCondition",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "equals": {}
+      },
+      "required": [
+        "pointer",
+        "equals"
+      ],
+      "additionalProperties": false
+    },
     "connectors_definitions.definition.FeedContainers": {
       "title": "FeedContainers",
       "x-ess-name": "connectors_definitions.definition.FeedContainers",
@@ -64,12 +81,33 @@
         "next": {
           "type": "string"
         },
+        "url_parameter": {
+          "type": "string"
+        },
         "last": {
           "type": "string"
+        },
+        "offset": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedOffset"
         }
       },
       "required": [
         "parameter"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedOffset": {
+      "title": "FeedOffset",
+      "x-ess-name": "connectors_definitions.definition.FeedOffset",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "complete": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedCondition"
+        }
+      },
+      "required": [
+        "complete"
       ],
       "additionalProperties": false
     }

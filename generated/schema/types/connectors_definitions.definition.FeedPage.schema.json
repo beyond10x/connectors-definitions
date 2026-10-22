@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedPage",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
+    "contract_digest": "slice-sha256/2:cd4695b67f17db30dababfbaf4cabbb86c8cc02dc979b04c1a2fbeba3cdef85c",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedPage": {
+      "title": "FeedPage",
+      "x-ess-name": "connectors_definitions.definition.FeedPage",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "parameter": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "url_parameter": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter",
+        "next"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

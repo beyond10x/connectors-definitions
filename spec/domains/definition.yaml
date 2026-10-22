@@ -1,5 +1,5 @@
 domain: connectors_definitions.definition
-summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes. A write's body maps each key, a top-level name or a JSON pointer, to its type, string, integer, boolean, string_list or any: a string followed by + must not be empty, a trailing ! requires the key, and =<value> sends that value fixed."
+summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes. A write's body maps each key, a top-level name or a JSON pointer, to its type, string, integer, boolean, string_list or any: a string followed by + must not be empty, a trailing ! requires the key, and =<value> sends that value fixed. A feed's container cursor names exactly one of next, last and offset; url_parameter, only beside next, names the query parameter of the next URL that carries the continuation, and offset sends the index of a page's first record and ends on the answer for which complete holds. A feed's item position names exactly one of time, a query parameter that takes the time, and query, a jql or cql template whose first holds {container} once and resume holds {container} and {since} once each; a query is at minute precision, and the items name no container parameter. utc_offsets bounds, in minutes east of UTC from -1439 to 1439 and least not above greatest, the offset of the zone the provider reads {since} in, and needs page, the continuation within one read. An item's url, url_base and parent are JSON pointers."
 
 types:
   - name: connectors_definitions.definition.SchemaId
@@ -214,12 +214,23 @@ types:
   - name: connectors_definitions.definition.DatasourceKind
     kind: enum
     variants: [feed]
+  - name: connectors_definitions.definition.FeedCondition
+    kind: struct
+    fields:
+      - {name: pointer, type: String}
+      - {name: equals, type: Json}
+  - name: connectors_definitions.definition.FeedOffset
+    kind: struct
+    fields:
+      - {name: complete, type: connectors_definitions.definition.FeedCondition}
   - name: connectors_definitions.definition.FeedCursor
     kind: struct
     fields:
       - {name: parameter, type: String}
       - {name: next, type: "Optional<String>"}
+      - {name: url_parameter, type: "Optional<String>"}
       - {name: last, type: "Optional<String>"}
+      - {name: offset, type: "Optional<connectors_definitions.definition.FeedOffset>"}
   - name: connectors_definitions.definition.FeedContainers
     kind: struct
     fields:
@@ -231,10 +242,38 @@ types:
       - {name: id, type: String}
       - {name: name, type: "Optional<String>"}
       - {name: kind_word, type: "Optional<String>"}
+  - name: connectors_definitions.definition.FeedQueryLanguage
+    kind: enum
+    variants: [jql, cql]
+  - name: connectors_definitions.definition.FeedUtcOffsets
+    kind: struct
+    fields:
+      - {name: least, type: Integer}
+      - {name: greatest, type: Integer}
+  - name: connectors_definitions.definition.FeedQuery
+    kind: struct
+    fields:
+      - {name: parameter, type: String}
+      - {name: language, type: connectors_definitions.definition.FeedQueryLanguage}
+      - {name: first, type: String}
+      - {name: resume, type: String}
+      - {name: utc_offsets, type: "Optional<connectors_definitions.definition.FeedUtcOffsets>"}
+  - name: connectors_definitions.definition.FeedPrecision
+    kind: enum
+    variants: [instant, minute]
+  - name: connectors_definitions.definition.FeedPage
+    kind: struct
+    fields:
+      - {name: parameter, type: String}
+      - {name: next, type: String}
+      - {name: url_parameter, type: "Optional<String>"}
   - name: connectors_definitions.definition.FeedPosition
     kind: struct
     fields:
-      - {name: time, type: String}
+      - {name: time, type: "Optional<String>"}
+      - {name: query, type: "Optional<connectors_definitions.definition.FeedQuery>"}
+      - {name: precision, type: "Optional<connectors_definitions.definition.FeedPrecision>"}
+      - {name: page, type: "Optional<connectors_definitions.definition.FeedPage>"}
   - name: connectors_definitions.definition.FeedAuthor
     kind: struct
     fields:
@@ -258,6 +297,9 @@ types:
       - {name: updated_at, type: String}
       - {name: author, type: "Optional<connectors_definitions.definition.FeedAuthor>"}
       - {name: body, type: connectors_definitions.definition.FeedBody}
+      - {name: url, type: "Optional<String>"}
+      - {name: url_base, type: "Optional<String>"}
+      - {name: parent, type: "Optional<String>"}
   - name: connectors_definitions.definition.Datasource
     kind: struct
     fields:

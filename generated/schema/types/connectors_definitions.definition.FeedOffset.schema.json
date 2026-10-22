@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.definition.FeedOffset",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
+    "contract_digest": "slice-sha256/2:1ab59d2230b28e9bd29fcc67f48b0b5c838ff69f4a5f1082bc8ec746565e6b03",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.definition.FeedCondition": {
+      "title": "FeedCondition",
+      "x-ess-name": "connectors_definitions.definition.FeedCondition",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "pointer": {
+          "type": "string"
+        },
+        "equals": {}
+      },
+      "required": [
+        "pointer",
+        "equals"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.FeedOffset": {
+      "title": "FeedOffset",
+      "x-ess-name": "connectors_definitions.definition.FeedOffset",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "complete": {
+          "$ref": "#/$defs/connectors_definitions.definition.FeedCondition"
+        }
+      },
+      "required": [
+        "complete"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
