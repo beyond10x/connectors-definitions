@@ -50,6 +50,7 @@ requests and merges through `b10x-gates api`. A personal `gh` login is read-only
 |---|---|
 | `task check` | the gate: `ess specify validate`, a drift check of `generated/`, then for every `connectors/*.yaml`: the vendored source hashing to `source.sha256`, and the file against the projected schema |
 | `task schema` | regenerates `generated/` from `spec/`; commit the result |
+| `task release-assets TAG=<version>` | writes `dist/`: the tarball of the tagged tree, its `.sha256` and `index.json` (`urn:beyond10x:connectors-definitions-index:1`, `spec/domains/release.yaml`), and refuses unless the index names exactly the tarball's files with their SHA-256; `task check` runs it on `HEAD` and validates the index |
 | `task release-check TAG=<version>` | refuses unless the tag is a bare version and `CHANGELOG.md` has `## [<version>] - <date>` and its `[<version>]:` link |
 
 `spec/` is the source of the definition format. `generated/` is never edited by hand. Tool versions
@@ -80,6 +81,8 @@ that makes the change also dates its CHANGELOG entry, and its merge commit is ta
   then `b10x-gates bot --repository beyond10x/connectors-definitions -- push origin <version>`.
 - `.github/workflows/release.yml` runs on the tag: `release-check`, then `check.yml`, then it creates
   the GitHub Release with the version's CHANGELOG section as notes,
-  `connectors-definitions-<version>.tar.gz` and its `.sha256`.
-- A release is finished when the tag, the green `release` run and the Release with both assets are
-  verified. Never move or delete a pushed tag; fix forward with the next version.
+  `connectors-definitions-<version>.tar.gz`, its `.sha256` and `index.json` from `task release-assets`.
+  Connectors installs a tag by the SHA-256 of its `index.json`, so a release's assets are published
+  once: the workflow refuses a tag whose Release exists, and no asset is ever replaced.
+- A release is finished when the tag, the green `release` run and the Release with its three assets
+  are verified. Never move or delete a pushed tag; fix forward with the next version.

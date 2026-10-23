@@ -4,3 +4,4 @@ version: v1
 domains:
   - connectors_definitions.definition
   - connectors_definitions.references
+  - connectors_definitions.release

@@ -1,0 +1,34 @@
+domain: connectors_definitions.release
+summary: "index.json, published beside each tag's release asset and never committed, since it names the commit it describes. schema is the index format version. tag is the release tag and commit the full id of the commit it points to. asset names the release tarball and its SHA-256. files lists every file in the asset, once each and sorted by path; a path is relative to the repository root, without the tarball's top directory, and sha256 and size are those of the file's bytes at that commit. features lists, sorted, each optional definition member a connector of the release uses, so an installer that cannot lower one refuses the release by its name. An entry never changes for a tag."
+
+types:
+  - name: connectors_definitions.release.IndexSchemaId
+    kind: enum
+    variants: ["urn:beyond10x:connectors-definitions-index:1"]
+  - name: connectors_definitions.release.Feature
+    kind: enum
+    variants: [query_fixed, query_folds, embedded_text, rate_limit_headers]
+  - name: connectors_definitions.release.HexDigest
+    kind: newtype
+    of: String
+    alphabet: "0123456789abcdef"
+  - name: connectors_definitions.release.Asset
+    kind: struct
+    fields:
+      - {name: name, type: String}
+      - {name: sha256, type: connectors_definitions.release.HexDigest}
+  - name: connectors_definitions.release.IndexFile
+    kind: struct
+    fields:
+      - {name: path, type: String}
+      - {name: sha256, type: connectors_definitions.release.HexDigest}
+      - {name: size, type: Integer}
+  - name: connectors_definitions.release.ReleaseIndex
+    kind: struct
+    fields:
+      - {name: schema, type: connectors_definitions.release.IndexSchemaId}
+      - {name: tag, type: String}
+      - {name: commit, type: connectors_definitions.release.HexDigest}
+      - {name: features, type: "List<connectors_definitions.release.Feature>"}
+      - {name: asset, type: connectors_definitions.release.Asset}
+      - {name: files, type: "List<connectors_definitions.release.IndexFile>"}
