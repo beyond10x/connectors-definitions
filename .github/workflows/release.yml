@@ -1,0 +1,90 @@
+name: release
+
+on:
+  push:
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: release / verify tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Install the pinned task release
+        working-directory: ${{ runner.temp }}
+        run: |
+          set -euo pipefail
+          task="$(jq -r .task "$GITHUB_WORKSPACE/toolchain.json")"
+          base="https://github.com/go-task/task/releases/download/$task"
+          curl -fsSLO "$base/task_linux_amd64.tar.gz"
+          curl -fsSLO "$base/task_checksums.txt"
+          grep " task_linux_amd64.tar.gz\$" task_checksums.txt | sha256sum -c -
+          mkdir task && tar -xzf task_linux_amd64.tar.gz -C task
+          echo "$PWD/task" >> "$GITHUB_PATH"
+
+      - name: The tag is a bare version and CHANGELOG.md has its entry
+        env:
+          TAG: ${{ github.ref_name }}
+        run: task release-check TAG="$TAG"
+
+  check:
+    name: release / check
+    needs: verify
+    permissions:
+      contents: read
+    uses: ./.github/workflows/check.yml
+
+  publish:
+    name: release / publish
+    needs: [verify, check]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ github.ref_name }}
+      ASSET: connectors-definitions-${{ github.ref_name }}.tar.gz
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Package the definitions and their checksum
+        run: |
+          set -euo pipefail
+          mkdir dist
+          git archive --format=tar.gz --prefix="connectors-definitions-$TAG/" -o "dist/$ASSET" "$TAG" \
+            connectors auth upstream spec generated toolchain.json CHANGELOG.md LICENSE README.md
+          (cd dist && sha256sum "$ASSET" > "$ASSET.sha256" && sha256sum --check --strict "$ASSET.sha256")
+
+      - name: Release notes from CHANGELOG.md
+        run: |
+          set -euo pipefail
+          awk -v head="## [$TAG] - " 'index($0, head) == 1 { found = 1; next } found && (/^## / || /^\[[^]]+\]: /) { exit } found { print }' CHANGELOG.md > notes.md
+          grep -q '[^[:space:]]' notes.md
+          printf '\nFull entry: https://github.com/%s/blob/%s/CHANGELOG.md\n' "$GITHUB_REPOSITORY" "$TAG" >> notes.md
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" "dist/$ASSET" "dist/$ASSET.sha256" --clobber
+          else
+            gh release create "$TAG" "dist/$ASSET" "dist/$ASSET.sha256" --title "$TAG" --notes-file notes.md --verify-tag
+          fi

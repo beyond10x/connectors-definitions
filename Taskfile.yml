@@ -29,3 +29,27 @@ tasks:
         done
       - for f in auth/*.yaml; do yq -o=json '.' "$f" > "{{.BUILD}}/instances/auth-$(basename "$f" .yaml).json"; done
       - ess generate schema validate --schemas {{.BUILD}}/schemas {{.BUILD}}/instances
+
+  release-check:
+    desc: Refuse unless TAG is a bare version with a dated CHANGELOG.md entry
+    silent: true
+    requires:
+      vars: [TAG]
+    env:
+      RELEASE_TAG: "{{.TAG}}"
+    cmds:
+      - cmd: |
+          set -eu
+          if ! printf '%s\n' "$RELEASE_TAG" | grep -Eqx '[0-9]+\.[0-9]+\.[0-9]+'; then
+            echo "release-check: tag '$RELEASE_TAG' is not a bare version such as 0.1.0" >&2
+            exit 1
+          fi
+          if ! awk -v head="## [$RELEASE_TAG] - " 'index($0, head) == 1 && substr($0, length(head) + 1) ~ /^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$/ { found = 1 } END { exit !found }' CHANGELOG.md; then
+            echo "release-check: CHANGELOG.md has no '## [$RELEASE_TAG] - <date>' entry" >&2
+            exit 1
+          fi
+          if ! awk -v head="[$RELEASE_TAG]: " 'index($0, head) == 1 { found = 1 } END { exit !found }' CHANGELOG.md; then
+            echo "release-check: CHANGELOG.md has no '[$RELEASE_TAG]: <url>' link" >&2
+            exit 1
+          fi
+          echo "release-check: $RELEASE_TAG has a dated CHANGELOG.md entry and link"
