@@ -54,8 +54,10 @@ change to `spec/`, run `task schema` and commit `generated/`.
 ## Releases
 
 Each merged change to a definition is released at a bare-version tag such as `0.1.0`. The GitHub
-Release carries `connectors-definitions-<version>.tar.gz` with its SHA-256; what changed is in
-[`CHANGELOG.md`](CHANGELOG.md).
+Release carries `connectors-definitions-<version>.tar.gz` with its SHA-256 and, from `0.3.0`,
+`index.json`: the tag, the tagged commit, the tarball's SHA-256, the SHA-256 and size of every file
+in it, and the optional format features its connectors use. Its format is
+`spec/domains/release.yaml`. What changed is in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## How it will work
 

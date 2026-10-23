@@ -4,7 +4,7 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "6f2f04a99bb9288dab10ac9389667e468e242bd854caa0ed38d9beddea037202",
+    "source_digest": "92633551fcac3e643295ac2afccbd0fa3fc7d939b72a7c5f96633672de3ccd91",
     "contract_digest": "slice-sha256/2:b7d62d0511b59bb004c5be06ee26541dee69acd6ef3ce5f3e273411ccac3b1f0",
     "regenerate": "ess generate"
   },

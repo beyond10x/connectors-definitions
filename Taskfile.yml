@@ -2,6 +2,7 @@ version: "3"
 
 vars:
   TYPES: generated/schema/types/connectors_definitions.definition
+  RELEASE_TYPES: generated/schema/types/connectors_definitions.release
   BUILD: .local/build
 
 tasks:
@@ -29,6 +30,65 @@ tasks:
         done
       - for f in auth/*.yaml; do yq -o=json '.' "$f" > "{{.BUILD}}/instances/auth-$(basename "$f" .yaml).json"; done
       - ess generate schema validate --schemas {{.BUILD}}/schemas {{.BUILD}}/instances
+      - task: release-assets
+        vars: {TAG: HEAD, REF: HEAD, OUT: "{{.BUILD}}/release"}
+      - |
+        mkdir -p {{.BUILD}}/index/schemas
+        yq -o=json '. + {"$id": "urn:beyond10x:connectors-definitions-index:1"}' {{.RELEASE_TYPES}}.ReleaseIndex.schema.json > {{.BUILD}}/index/schemas/index.schema.json
+        ess generate schema validate --schemas {{.BUILD}}/index/schemas {{.BUILD}}/release/index.json
+
+  release-assets:
+    desc: Write the release tarball of REF, its .sha256 and index.json for TAG into OUT, and check the index against the tarball
+    silent: true
+    requires:
+      vars: [TAG]
+    vars:
+      REF: '{{.REF | default .TAG}}'
+      OUT: '{{.OUT | default "dist"}}'
+    env:
+      RELEASE_TAG: "{{.TAG}}"
+      RELEASE_REF: "{{.REF}}"
+      RELEASE_OUT: "{{.OUT}}"
+      FEATURES: "{{.RELEASE_TYPES}}.Feature.schema.json"
+    cmds:
+      - cmd: |
+          set -euo pipefail
+          export LC_ALL=C
+          paths="connectors auth upstream spec generated toolchain.json CHANGELOG.md LICENSE README.md"
+          commit=$(git rev-parse --verify "$RELEASE_REF^{commit}")
+          prefix="connectors-definitions-$RELEASE_TAG"
+          asset="$prefix.tar.gz"
+          rm -rf "$RELEASE_OUT" && mkdir -p "$RELEASE_OUT/unpacked"
+          git ls-tree -r "$commit" -- $paths | awk '$1 != "100644" && $1 != "100755" { print "release-assets: " $4 " is not a regular file" > "/dev/stderr"; bad = 1 } END { exit bad }'
+          git archive --format=tar.gz --prefix="$prefix/" -o "$RELEASE_OUT/$asset" "$commit" $paths
+          (cd "$RELEASE_OUT" && sha256sum "$asset" > "$asset.sha256")
+          git ls-tree -r --name-only "$commit" -- $paths | sort > "$RELEASE_OUT/paths"
+          while IFS= read -r p; do
+            printf '%s\t%s\t%s\n' "$p" "$(git cat-file blob "$commit:$p" | sha256sum | cut -c1-64)" "$(git cat-file -s "$commit:$p")"
+          done < "$RELEASE_OUT/paths" > "$RELEASE_OUT/files.tsv"
+          for f in $(grep '^connectors/.*\.yaml$' "$RELEASE_OUT/paths"); do
+            git cat-file blob "$commit:$f" | yq -o=json '[.. | select(tag == "!!map") | keys | .[]] | unique'
+          done | jq -s 'add | unique' > "$RELEASE_OUT/keys.json"
+          git cat-file blob "$commit:$FEATURES" | jq '[.["$defs"][].enum] | add' > "$RELEASE_OUT/known.json"
+          jq -n \
+            --arg tag "$RELEASE_TAG" --arg commit "$commit" --arg asset "$asset" \
+            --arg asset_sha "$(cut -c1-64 "$RELEASE_OUT/$asset.sha256")" \
+            --slurpfile keys "$RELEASE_OUT/keys.json" --slurpfile known "$RELEASE_OUT/known.json" \
+            --rawfile files "$RELEASE_OUT/files.tsv" \
+            '{
+              schema: "urn:beyond10x:connectors-definitions-index:1",
+              tag: $tag,
+              commit: $commit,
+              features: [$known[0][] as $f | select($keys[0] | index($f)) | $f] | sort,
+              asset: {name: $asset, sha256: $asset_sha},
+              files: [$files | split("\n")[] | select(. != "") | split("\t") | {path: .[0], sha256: .[1], size: (.[2] | tonumber)}]
+            }' > "$RELEASE_OUT/index.json"
+          tar -xzf "$RELEASE_OUT/$asset" -C "$RELEASE_OUT/unpacked"
+          (cd "$RELEASE_OUT/unpacked/$prefix" && find . -type f -o -type l | sed 's#^\./##' | sort) > "$RELEASE_OUT/unpacked.paths"
+          jq -r '.files[].path' "$RELEASE_OUT/index.json" | diff - "$RELEASE_OUT/unpacked.paths" || { echo "release-assets: index.json does not name exactly the files of $asset" >&2; exit 1; }
+          jq -r '.files[] | "\(.sha256)  \(.path)"' "$RELEASE_OUT/index.json" | (cd "$RELEASE_OUT/unpacked/$prefix" && sha256sum --check --strict --quiet)
+          rm -rf "$RELEASE_OUT/unpacked" "$RELEASE_OUT/paths" "$RELEASE_OUT/files.tsv" "$RELEASE_OUT/keys.json" "$RELEASE_OUT/known.json" "$RELEASE_OUT/unpacked.paths"
+          echo "release-assets: $asset, $asset.sha256 and index.json ($(jq '.files | length' "$RELEASE_OUT/index.json") files, features $(jq -c .features "$RELEASE_OUT/index.json")) for $commit"
 
   release-check:
     desc: Refuse unless TAG is a bare version with a dated CHANGELOG.md entry

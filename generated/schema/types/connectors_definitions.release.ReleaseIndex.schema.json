@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.release.ReleaseIndex",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "92633551fcac3e643295ac2afccbd0fa3fc7d939b72a7c5f96633672de3ccd91",
+    "contract_digest": "slice-sha256/2:be6cf3368576a9fc66fcfade6b1e0e0bf98f737430f152d8ecb43833724b8eec",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.release.Asset": {
+      "title": "Asset",
+      "x-ess-name": "connectors_definitions.release.Asset",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/connectors_definitions.release.HexDigest"
+        }
+      },
+      "required": [
+        "name",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.release.Feature": {
+      "title": "Feature",
+      "x-ess-name": "connectors_definitions.release.Feature",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "query_fixed",
+        "query_folds",
+        "embedded_text",
+        "rate_limit_headers"
+      ]
+    },
+    "connectors_definitions.release.HexDigest": {
+      "title": "HexDigest",
+      "x-ess-name": "connectors_definitions.release.HexDigest",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "pattern": "^[0-9a-f]*$",
+      "x-ess-alphabet": "0123456789abcdef"
+    },
+    "connectors_definitions.release.IndexFile": {
+      "title": "IndexFile",
+      "x-ess-name": "connectors_definitions.release.IndexFile",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/connectors_definitions.release.HexDigest"
+        },
+        "size": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "size"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.release.IndexSchemaId": {
+      "title": "IndexSchemaId",
+      "x-ess-name": "connectors_definitions.release.IndexSchemaId",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "urn:beyond10x:connectors-definitions-index:1"
+      ]
+    },
+    "connectors_definitions.release.ReleaseIndex": {
+      "title": "ReleaseIndex",
+      "x-ess-name": "connectors_definitions.release.ReleaseIndex",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "schema": {
+          "$ref": "#/$defs/connectors_definitions.release.IndexSchemaId"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "commit": {
+          "$ref": "#/$defs/connectors_definitions.release.HexDigest"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.release.Feature"
+          }
+        },
+        "asset": {
+          "$ref": "#/$defs/connectors_definitions.release.Asset"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/connectors_definitions.release.IndexFile"
+          }
+        }
+      },
+      "required": [
+        "schema",
+        "tag",
+        "commit",
+        "features",
+        "asset",
+        "files"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

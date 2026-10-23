@@ -62,13 +62,23 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Package the definitions and their checksum
+      - name: Install the pinned task release
+        working-directory: ${{ runner.temp }}
         run: |
           set -euo pipefail
-          mkdir dist
-          git archive --format=tar.gz --prefix="connectors-definitions-$TAG/" -o "dist/$ASSET" "$TAG" \
-            connectors auth upstream spec generated toolchain.json CHANGELOG.md LICENSE README.md
-          (cd dist && sha256sum "$ASSET" > "$ASSET.sha256" && sha256sum --check --strict "$ASSET.sha256")
+          task="$(jq -r .task "$GITHUB_WORKSPACE/toolchain.json")"
+          base="https://github.com/go-task/task/releases/download/$task"
+          curl -fsSLO "$base/task_linux_amd64.tar.gz"
+          curl -fsSLO "$base/task_checksums.txt"
+          grep " task_linux_amd64.tar.gz\$" task_checksums.txt | sha256sum -c -
+          mkdir task && tar -xzf task_linux_amd64.tar.gz -C task
+          echo "$PWD/task" >> "$GITHUB_PATH"
+
+      - name: Package the definitions, their checksum and index.json
+        run: |
+          set -euo pipefail
+          task release-assets TAG="$TAG"
+          (cd dist && sha256sum --check --strict "$ASSET.sha256")
 
       - name: Release notes from CHANGELOG.md
         run: |
@@ -84,7 +94,7 @@ jobs:
         run: |
           set -euo pipefail
           if gh release view "$TAG" > /dev/null 2>&1; then
-            gh release upload "$TAG" "dist/$ASSET" "dist/$ASSET.sha256" --clobber
-          else
-            gh release create "$TAG" "dist/$ASSET" "dist/$ASSET.sha256" --title "$TAG" --notes-file notes.md --verify-tag
+            echo "release $TAG exists; its assets are published once and never replaced" >&2
+            exit 1
           fi
+          gh release create "$TAG" "dist/$ASSET" "dist/$ASSET.sha256" dist/index.json --title "$TAG" --notes-file notes.md --verify-tag

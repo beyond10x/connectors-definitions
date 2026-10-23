@@ -4,11 +4,25 @@ All notable changes to connectors-definitions are recorded here, in the format o
 [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/). The repository releases from
 source at bare-version tags such as `0.1.0`; nothing is on a registry. Each release on GitHub
 carries `connectors-definitions-<version>.tar.gz` (the connector definitions, shared auth profiles,
-vendored upstream documents, the ESS source and its generated schema) and its SHA-256 checksum.
+vendored upstream documents, the ESS source and its generated schema), its SHA-256 checksum and,
+from 0.3.0, `index.json`.
 Changes collect under `[Unreleased]` until the next release, and every merged change to a
 definition is released.
 
 ## [Unreleased]
+
+## [0.3.0] - 2026-10-23
+
+Each release publishes `index.json`.
+
+### Added
+
+- `index.json` as a release asset, format `urn:beyond10x:connectors-definitions-index:1` (`spec/domains/release.yaml`, projected to `generated/`): the tag, the tagged commit, the tarball's SHA-256, every file in the tarball sorted by path with its SHA-256 and size, and the optional format features the connectors use (`embedded_text`, `query_fixed`, `query_folds`, `rate_limit_headers` in this release). 0.1.0 and 0.2.0 have none.
+- `task release-assets TAG=<version>` writes the tarball, its `.sha256` and `index.json`, and refuses unless the index names exactly the tarball's files with their SHA-256; `task check` runs it on `HEAD` and validates the index against the projected schema.
+
+### Changed
+
+- The release workflow refuses a tag whose GitHub Release exists instead of replacing its assets.
 
 ## [0.2.0] - 2026-10-23
 
@@ -35,6 +49,7 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/beyond10x/connectors-definitions/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/beyond10x/connectors-definitions/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/beyond10x/connectors-definitions/releases/tag/0.1.0

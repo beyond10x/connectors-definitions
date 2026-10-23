@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/connectors_definitions.release.HexDigest",
+  "x-ess-provenance": {
+    "system": "connectors_definitions",
+    "specification_version": "v1",
+    "source_digest": "92633551fcac3e643295ac2afccbd0fa3fc7d939b72a7c5f96633672de3ccd91",
+    "contract_digest": "slice-sha256/2:8701ec07a32bffadb2f2e953f2830123ca215f6b0644714b049fa8d347b15612",
+    "regenerate": "ess generate"
+  },
+  "$defs": {
+    "connectors_definitions.release.HexDigest": {
+      "title": "HexDigest",
+      "x-ess-name": "connectors_definitions.release.HexDigest",
+      "x-ess-kind": "newtype",
+      "type": "string",
+      "pattern": "^[0-9a-f]*$",
+      "x-ess-alphabet": "0123456789abcdef"
+    }
+  }
+}
