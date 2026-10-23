@@ -51,6 +51,12 @@ source, fails if `generated/` drifted from it, checks every vendored source agai
 and validates every `connectors/*.yaml` against the projected schema. CI runs the same task. After a
 change to `spec/`, run `task schema` and commit `generated/`.
 
+## Releases
+
+Each merged change to a definition is released at a bare-version tag such as `0.1.0`. The GitHub
+Release carries `connectors-definitions-<version>.tar.gz` with its SHA-256; what changed is in
+[`CHANGELOG.md`](CHANGELOG.md).
+
 ## How it will work
 
 1. You vendor the upstream document under `upstream/<id>/` and write `connectors/<id>.yaml`:
