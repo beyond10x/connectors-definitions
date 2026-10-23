@@ -20,7 +20,9 @@ and design are `architecture-decision-record:provider-definitions-and-runtimes` 
 One connector per service: its read and write operations live in the same definition. Never split a
 service into a per-direction pair (`<id>-read` and `<id>-write`) of connectors, files, bundles or
 instances; writes added later go into the existing file (Connectors
-`architecture-decision-record:connector-vocabulary`).
+`architecture-decision-record:connector-vocabulary`, line 56; restated by the operator on 2026-10-23).
+A connector id, file or bundle name never ends in `-read(s)` or `-write(s)`; only an id of planned
+work may.
 
 ## Rules
 

@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "92633551fcac3e643295ac2afccbd0fa3fc7d939b72a7c5f96633672de3ccd91",
-    "contract_digest": "slice-sha256/2:c1e1cd9564a925a188459e6b5e876f1e0d3b8f61215ab5a84832c1504f62fef2",
+    "source_digest": "a4c05c67995ed61e20a3a35eb750caa88e325a241aea01c0dbf9667d9924ed72",
+    "contract_digest": "slice-sha256/2:ccddd55918cb03209377dc95b7c038118da1406119f6c957ba44a75175c96db5",
     "regenerate": "ess generate"
   },
   "$defs": {
