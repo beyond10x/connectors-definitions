@@ -64,18 +64,18 @@ schema's `$id`, which `ess generate schema validate` selects by.
 ## Releases
 
 Released from source at bare-version tags (`0.1.0`, no `v`); nothing is on a registry. Every merged
-change to a definition, an auth profile, a vendored document or the format is released: open the
-release commit right after the merge.
+change to a definition, an auth profile, a vendored document or the format is released. The pull request
+that makes the change also dates its CHANGELOG entry, and its merge commit is tagged.
 
 - `CHANGELOG.md` follows Keep a Changelog 1.1.0. Each change adds one line under `## [Unreleased]`
   naming the connector and operation ids it touches. A removed or renamed connector, operation or
   format field goes under a `**Breaking**` line.
 - Version: a breaking change or a new connector, operation or format field is a minor bump while the
   version is below 1.0.0; a fix to an existing definition is a patch bump.
-- A release commit on `main` turns `## [Unreleased]` into `## [<version>] - <date>` under a new empty
+- The release commit turns `## [Unreleased]` into `## [<version>] - <date>` under a new empty
   `## [Unreleased]` and moves the link references at the bottom. `task release-check TAG=<version>`
-  passes on it, and `Check` is green on it before it is tagged.
-- The tag is the bot's, on that commit:
+  passes on it, and `Check` is green on the merge commit on `main` before it is tagged.
+- The tag is the bot's, on that merge commit:
   `b10x-gates bot --repository beyond10x/connectors-definitions -- tag -a <version> -m "connectors-definitions <version>" <commit>`,
   then `b10x-gates bot --repository beyond10x/connectors-definitions -- push origin <version>`.
 - `.github/workflows/release.yml` runs on the tag: `release-check`, then `check.yml`, then it creates
