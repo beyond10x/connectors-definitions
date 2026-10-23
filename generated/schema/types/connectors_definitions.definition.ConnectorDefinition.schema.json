@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
-    "contract_digest": "slice-sha256/2:ee89a13042851e7a0526efd206dc466d975f6ae194cd442c062e45da19d03364",
+    "source_digest": "6f2f04a99bb9288dab10ac9389667e468e242bd854caa0ed38d9beddea037202",
+    "contract_digest": "slice-sha256/2:42ecdcf91cb186785c28d9f4639d9da380cd0d3276a03faa5aa447da42c88490",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -425,6 +425,9 @@
             "type": "string"
           }
         },
+        "rate_limit_headers": {
+          "$ref": "#/$defs/connectors_definitions.definition.RateLimitHeaders"
+        },
         "refusal_texts": {
           "type": "array",
           "items": {
@@ -461,6 +464,32 @@
         "read",
         "write"
       ]
+    },
+    "connectors_definitions.definition.EmbeddedText": {
+      "title": "EmbeddedText",
+      "x-ess-name": "connectors_definitions.definition.EmbeddedText",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "max_bytes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "content",
+        "encoding",
+        "max_bytes"
+      ],
+      "additionalProperties": false
     },
     "connectors_definitions.definition.Envelope": {
       "title": "Envelope",
@@ -839,6 +868,15 @@
       ],
       "additionalProperties": false
     },
+    "connectors_definitions.definition.FoldFormat": {
+      "title": "FoldFormat",
+      "x-ess-name": "connectors_definitions.definition.FoldFormat",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "timestamp"
+      ]
+    },
     "connectors_definitions.definition.Guard": {
       "title": "Guard",
       "x-ess-name": "connectors_definitions.definition.Guard",
@@ -1101,6 +1139,26 @@
         "guard": {
           "$ref": "#/$defs/connectors_definitions.definition.Guard"
         },
+        "query_fixed": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "query_folds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.QueryFold"
+          },
+          "x-ess-map-key": "String"
+        },
+        "embedded_text": {
+          "$ref": "#/$defs/connectors_definitions.definition.EmbeddedText"
+        },
+        "rate_limit_headers": {
+          "$ref": "#/$defs/connectors_definitions.definition.RateLimitHeaders"
+        },
         "description": {
           "type": "string"
         }
@@ -1132,6 +1190,48 @@
           "type": "string"
         }
       },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.QueryFold": {
+      "title": "QueryFold",
+      "x-ess-name": "connectors_definitions.definition.QueryFold",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "into": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/$defs/connectors_definitions.definition.FoldFormat"
+        }
+      },
+      "required": [
+        "into",
+        "prefix",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.RateLimitHeaders": {
+      "title": "RateLimitHeaders",
+      "x-ess-name": "connectors_definitions.definition.RateLimitHeaders",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "remaining": {
+          "type": "string"
+        },
+        "reset": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "remaining",
+        "reset"
+      ],
       "additionalProperties": false
     },
     "connectors_definitions.definition.RefusalCode": {

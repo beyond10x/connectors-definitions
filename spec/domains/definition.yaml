@@ -1,5 +1,5 @@
 domain: connectors_definitions.definition
-summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes. A write's body maps each key, a top-level name or a JSON pointer, to its type, string, integer, boolean, string_list or any: a string followed by + must not be empty, a trailing ! requires the key, and =<value> sends that value fixed. A feed's container cursor names exactly one of next, last and offset; url_parameter, only beside next, names the query parameter of the next URL that carries the continuation, and offset sends the index of a page's first record and ends on the answer for which complete holds. A feed's item position names exactly one of time, a query parameter that takes the time, and query, a jql or cql template whose first holds {container} once and resume holds {container} and {since} once each; a query is at minute precision, and the items name no container parameter. utc_offsets bounds, in minutes east of UTC from -1439 to 1439 and least not above greatest, the offset of the zone the provider reads {since} in, and needs page, the continuation within one read. An item's url, url_base and parent are JSON pointers."
+summary: "One connector definition, connectors/<id>.yaml. It names a vendored source and says which of its operations to expose and how; everything the source states is left to the lowerer. A source names exactly one of openapi, swagger and discovery, and a swagger or discovery source names its projection. Defaults hold fields an operation carries to the engine as written: each applies to every operation that does not set it, except envelope, which applies only to the reads that answer JSON (no response other than json, no download), and refusal_texts and custody, which apply only to writes. A write's body maps each key, a top-level name or a JSON pointer, to its type, string, integer, boolean, string_list or any: a string followed by + must not be empty, a trailing ! requires the key, and =<value> sends that value fixed. A feed's container cursor names exactly one of next, last and offset; url_parameter, only beside next, names the query parameter of the next URL that carries the continuation, and offset sends the index of a page's first record and ends on the answer for which complete holds. A feed's item position names exactly one of time, a query parameter that takes the time, and query, a jql or cql template whose first holds {container} once and resume holds {container} and {since} once each; a query is at minute precision, and the items name no container parameter. utc_offsets bounds, in minutes east of UTC from -1439 to 1439 and least not above greatest, the offset of the zone the provider reads {since} in, and needs page, the continuation within one read. An item's url, url_base and parent are JSON pointers. A read's query_fixed sends each named query parameter with that value on every request, and a caller cannot send it; query_folds names a caller input, not a parameter of the source, that is appended to the fixed value of into as one space, prefix and the input in format. embedded_text answers the file a JSON answer carries as base64 text: content, encoding and size are JSON pointers, encoding must read base64, and a file over max_bytes is refused. rate_limit_headers names the headers by which a 403 or 429 says the rate limit is spent: remaining at 0 makes it rate_limited, with the wait to the Unix time in reset."
 
 types:
   - name: connectors_definitions.definition.SchemaId
@@ -173,6 +173,27 @@ types:
       - {name: minimum, type: "Optional<Integer>"}
       - {name: maximum, type: "Optional<Integer>"}
       - {name: values, type: "Optional<List<String>>"}
+  - name: connectors_definitions.definition.FoldFormat
+    kind: enum
+    variants: [timestamp]
+  - name: connectors_definitions.definition.QueryFold
+    kind: struct
+    fields:
+      - {name: into, type: String}
+      - {name: prefix, type: String}
+      - {name: format, type: connectors_definitions.definition.FoldFormat}
+  - name: connectors_definitions.definition.EmbeddedText
+    kind: struct
+    fields:
+      - {name: content, type: String}
+      - {name: encoding, type: String}
+      - {name: size, type: "Optional<String>"}
+      - {name: max_bytes, type: Integer}
+  - name: connectors_definitions.definition.RateLimitHeaders
+    kind: struct
+    fields:
+      - {name: remaining, type: String}
+      - {name: reset, type: String}
   - name: connectors_definitions.definition.Defaults
     kind: struct
     fields:
@@ -185,6 +206,7 @@ types:
       - {name: download, type: "Optional<connectors_definitions.definition.Download>"}
       - {name: envelope, type: "Optional<connectors_definitions.definition.Envelope>"}
       - {name: rate_limit_reasons, type: "Optional<List<String>>"}
+      - {name: rate_limit_headers, type: "Optional<connectors_definitions.definition.RateLimitHeaders>"}
       - {name: refusal_texts, type: "Optional<List<connectors_definitions.definition.TextRefusal>>"}
       - {name: custody, type: "Optional<connectors_definitions.definition.Custody>"}
   - name: connectors_definitions.definition.Operation
@@ -210,6 +232,10 @@ types:
       - {name: body_prefixes, type: "Optional<Map<String, String>>"}
       - {name: conflict_status, type: "Optional<Integer>"}
       - {name: guard, type: "Optional<connectors_definitions.definition.Guard>"}
+      - {name: query_fixed, type: "Optional<Map<String, String>>"}
+      - {name: query_folds, type: "Optional<Map<String, connectors_definitions.definition.QueryFold>>"}
+      - {name: embedded_text, type: "Optional<connectors_definitions.definition.EmbeddedText>"}
+      - {name: rate_limit_headers, type: "Optional<connectors_definitions.definition.RateLimitHeaders>"}
       - {name: description, type: "Optional<String>"}
   - name: connectors_definitions.definition.DatasourceKind
     kind: enum
