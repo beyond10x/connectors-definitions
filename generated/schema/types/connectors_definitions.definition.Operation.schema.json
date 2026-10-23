@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "bd189670b446cc1f06e13de68ab7fbc784de7e1fe19c8096bbe7b4874834e81e",
-    "contract_digest": "slice-sha256/2:6e14dcdbe6844c9ea0e6cbb2e020406ed2bbfcf072d07210e4dd8339610b473e",
+    "source_digest": "6f2f04a99bb9288dab10ac9389667e468e242bd854caa0ed38d9beddea037202",
+    "contract_digest": "slice-sha256/2:7eab7bed034b3c4bb2acbe5347bfc030c9d1ce2a64fc7341b1fb6d648844f051",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -99,6 +99,32 @@
         "write"
       ]
     },
+    "connectors_definitions.definition.EmbeddedText": {
+      "title": "EmbeddedText",
+      "x-ess-name": "connectors_definitions.definition.EmbeddedText",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "max_bytes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "content",
+        "encoding",
+        "max_bytes"
+      ],
+      "additionalProperties": false
+    },
     "connectors_definitions.definition.Envelope": {
       "title": "Envelope",
       "x-ess-name": "connectors_definitions.definition.Envelope",
@@ -163,6 +189,15 @@
         "code"
       ],
       "additionalProperties": false
+    },
+    "connectors_definitions.definition.FoldFormat": {
+      "title": "FoldFormat",
+      "x-ess-name": "connectors_definitions.definition.FoldFormat",
+      "x-ess-kind": "enum",
+      "type": "string",
+      "enum": [
+        "timestamp"
+      ]
     },
     "connectors_definitions.definition.Guard": {
       "title": "Guard",
@@ -415,10 +450,72 @@
         "guard": {
           "$ref": "#/$defs/connectors_definitions.definition.Guard"
         },
+        "query_fixed": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "query_folds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/connectors_definitions.definition.QueryFold"
+          },
+          "x-ess-map-key": "String"
+        },
+        "embedded_text": {
+          "$ref": "#/$defs/connectors_definitions.definition.EmbeddedText"
+        },
+        "rate_limit_headers": {
+          "$ref": "#/$defs/connectors_definitions.definition.RateLimitHeaders"
+        },
         "description": {
           "type": "string"
         }
       },
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.QueryFold": {
+      "title": "QueryFold",
+      "x-ess-name": "connectors_definitions.definition.QueryFold",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "into": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "format": {
+          "$ref": "#/$defs/connectors_definitions.definition.FoldFormat"
+        }
+      },
+      "required": [
+        "into",
+        "prefix",
+        "format"
+      ],
+      "additionalProperties": false
+    },
+    "connectors_definitions.definition.RateLimitHeaders": {
+      "title": "RateLimitHeaders",
+      "x-ess-name": "connectors_definitions.definition.RateLimitHeaders",
+      "x-ess-kind": "struct",
+      "type": "object",
+      "properties": {
+        "remaining": {
+          "type": "string"
+        },
+        "reset": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "remaining",
+        "reset"
+      ],
       "additionalProperties": false
     },
     "connectors_definitions.definition.RefusalCode": {

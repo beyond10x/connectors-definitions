@@ -10,6 +10,16 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-23
+
+GitHub reads, and the format members they need.
+
+### Added
+
+- `connectors/github.yaml`, connector `github` with auth profile `github.token` (bearer, identity `GET /user`, subject `/id`) and 10 reads: `review_requests.list`, `issues.assigned`, `notifications.list`, `user.me`, `repos.list`, `repo.get`, `releases.list`, `release.latest`, `readme.raw`, `file.raw`; writes will join the same file.
+- `upstream/github/`: GitHub's REST description `v2.1.0` (`api.github.com.yaml`, redacted under `upstream-redaction/4`) and its MIT licence.
+- Format: an operation's `query_fixed`, `query_folds`, `embedded_text` and `rate_limit_headers`, and `rate_limit_headers` in `defaults`.
+
 ## [0.1.0] - 2026-10-23
 
 The first release: 15 connector definitions with 158 operations, validated against the
@@ -25,5 +35,6 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/beyond10x/connectors-definitions/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/beyond10x/connectors-definitions/releases/tag/0.1.0
