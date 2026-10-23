@@ -11,6 +11,16 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-23
+
+The format description follows Connectors `25ed378a2` and `7d2d19a75`; no definition changes.
+
+### Changed
+
+- `rate_limit_headers`: a `403` or `429` that carries `Retry-After` is `rate_limited` whatever `remaining` says, with the wait `Retry-After` names, read before `reset` (Connectors `25ed378a2`).
+- Feeds: a `query` position's `first` holds no `{since}` (refusal `feed_query_first`), and the position's `time`, `query.parameter` and `page.parameter` each name a query parameter the items operation takes (`feed_position_parameter`).
+- AGENTS.md: a connector id, file or bundle name never ends in `-read(s)` or `-write(s)`, as Connectors `7d2d19a75` states.
+
 ## [0.3.0] - 2026-10-23
 
 Each release publishes `index.json`.
@@ -49,7 +59,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.3.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.3.1...HEAD
+[0.3.1]: https://github.com/beyond10x/connectors-definitions/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/beyond10x/connectors-definitions/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/beyond10x/connectors-definitions/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/beyond10x/connectors-definitions/releases/tag/0.1.0
