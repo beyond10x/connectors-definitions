@@ -11,6 +11,10 @@ definition is released.
 
 ## [Unreleased]
 
+### Changed
+
+- `task check` runs on ess 0.72.0 (from 0.68.0); the projected schema in `generated/` is unchanged, and no connector, operation or format field changes.
+
 ## [0.3.1] - 2026-10-23
 
 The format description follows Connectors `25ed378a2` and `7d2d19a75`; no definition changes.
