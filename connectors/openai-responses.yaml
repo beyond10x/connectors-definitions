@@ -1,0 +1,55 @@
+schema: urn:beyond10x:connectors-definition:1
+source:
+  openapi: upstream/openai-responses/openai-openapi.json.gz
+  sha256: 0a26f104d35f008b0b54130be880359f80bb7661bdb333cd3ab05bbf49c64bb5
+base_url: https://{hostname}/v1
+config: {hostname: {type: string, default: api.openai.com}}
+auth:
+  openai.api-key:
+    scheme: bearer
+    label: OpenAI-compatible API key
+    identity: {source: configuration, path: models, kind: openai.connection}
+operations:
+  models.list:
+    op: listModels
+    description: List the models the key may use, in one answer; the same read proves the key when it is connected or revalidated
+  response.create:
+    op: createResponse
+    effect: write
+    body:
+      model: string+
+      input: any
+      instructions: any
+      previous_response_id: any
+      conversation: any
+      prompt: any
+      tools: any
+      tool_choice: any
+      parallel_tool_calls: any
+      max_tool_calls: any
+      max_output_tokens: any
+      temperature: any
+      top_p: any
+      top_logprobs: any
+      reasoning: any
+      text: any
+      truncation: any
+      context_management: any
+      include: any
+      metadata: any
+      store: any
+      background: any
+      service_tier: any
+      prompt_cache_key: any
+      prompt_cache_options: any
+      prompt_cache_retention: any
+      safety_identifier: any
+      user: any
+      moderation: any
+      access_programs: any
+      stream: =false
+    description: "Create one model response from body and answer it whole in one reply: stream is fixed to false, so a body naming stream is refused before any request, and stream_options is not admitted. Each call is billed to the key's account. Unguarded: nothing exists to compare before a create, so the same input approved and sent again creates and bills a second response, and a lost connection or a 5xx after the request was sent may have created one. body.model names the model, body.input the input and body.previous_response_id the response it continues; with body.background true the reply is the queued response at once, which response.get reads by id until it completes"
+  response.get:
+    op: getResponse
+    withhold: [stream, starting_after, include_obfuscation]
+    description: Read one response by response_id in one answer, with the extra fields include names; the streaming parameters stream, starting_after and include_obfuscation are withheld, so an input carrying one is refused before any request. A response created with body.store false is not kept, and reading it answers 404

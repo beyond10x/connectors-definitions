@@ -8,10 +8,11 @@ and says which of its operations to expose, under which local names, with what c
 auth. Everything the upstream document states (methods, paths, parameters) is left to a lowerer,
 which builds a runtime's internal representation from the two.
 
-**Status: early.** Sixteen connectors are here, one per selection the Connectors catalog ships or has under review
-([`connectors/`](connectors/)). `connectors-build definition import` in Connectors wrote each from the
-shipped selection, its bundle and the pinned source, and its lowerer gives that bundle and selection
-back; `task check` validates them. The install
+**Status: early.** Seventeen connectors are here ([`connectors/`](connectors/)). Sixteen are one per
+selection the Connectors catalog ships or has under review: `connectors-build definition import` in
+Connectors wrote each from the shipped selection, its bundle and the pinned source, and its lowerer
+gives that bundle and selection back. `openai-responses` is authored here first and has no
+Connectors selection yet. `task check` validates them all. The install
 command is designed and not yet built. The design is in the
 Connectors planning store:
 `architecture-decision-record:provider-definitions-and-runtimes` and

@@ -11,6 +11,10 @@ definition is released.
 
 ## [Unreleased]
 
+### Added
+
+- `connectors/openai-responses.yaml`, connector `openai-responses` for any OpenAI-Responses-compatible API, with config `hostname` (default `api.openai.com`, base URL `https://{hostname}/v1`), auth profile `openai.api-key` (bearer, the key proven by `GET /models`) and 3 request/response operations: `models.list`, `response.create` (write, `stream` fixed to `false`) and `response.get` (`stream`, `starting_after` and `include_obfuscation` withheld); `upstream/openai-responses/`: the publisher's OpenAPI document at `openai/openai-openapi` `089b14f36` and its MIT licence.
+
 ### Changed
 
 - `task check` runs on ess 0.75.0 (from 0.68.0); the projected schema in `generated/` is unchanged, and no connector, operation or format field changes.
