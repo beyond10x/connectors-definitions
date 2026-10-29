@@ -11,6 +11,12 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-30
+
+### Fixed
+
+- `connectors/zendesk.yaml`, `ticket.audits` (`ListAuditsForTicket`): `include_boundary_indicators` is fixed to `true`. The pinned response schema declares no `meta`; the parameter is what adds `meta.has_more` to a cursor page, which the walk's end condition reads. The first call must send `page[size]`, as the parameter is valid only with cursor pagination. `ticket.comments` is unchanged: the pinned operation declares no such parameter and Zendesk's pagination guide names `meta.has_more` as the end of a cursor walk.
+
 ## [0.5.0] - 2026-10-30
 
 ### Added
@@ -75,7 +81,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.5.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...HEAD
+[0.5.1]: https://github.com/beyond10x/connectors-definitions/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/beyond10x/connectors-definitions/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/beyond10x/connectors-definitions/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/beyond10x/connectors-definitions/compare/0.3.0...0.3.1
