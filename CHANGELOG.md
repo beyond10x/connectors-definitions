@@ -15,7 +15,7 @@ definition is released.
 
 ### Fixed
 
-- `connectors/zendesk.yaml`, `ticket.audits` (`ListAuditsForTicket`): `include_boundary_indicators` is fixed to `true`. The pinned response schema declares no `meta`; the parameter is what adds `meta.has_more` to a cursor page, which the walk's end condition reads. The first call must send `page[size]`, as the parameter is valid only with cursor pagination. `ticket.comments` is unchanged: the pinned operation declares no such parameter and Zendesk's pagination guide names `meta.has_more` as the end of a cursor walk.
+- `connectors/zendesk.yaml`, `ticket.audits` (`ListAuditsForTicket`) and `ticket.comments` (`ListTicketComments`): the descriptions state an end condition the response carries. The pinned response schemas declare no `meta`, so `meta.has_more` may be absent; a walk now also ends on a page with no `meta.after_cursor` or with no audits (no comments, for ticket.comments). The incremental exports end on `end_of_stream`, which their pinned schemas declare, and are unchanged. The Connectors built-in catalog carries the same two descriptions.
 
 ## [0.5.0] - 2026-10-30
 
