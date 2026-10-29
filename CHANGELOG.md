@@ -11,6 +11,8 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-29
+
 ### Added
 
 - `connectors/openai-responses.yaml`, connector `openai-responses` for any OpenAI-Responses-compatible API, with config `hostname` (default `api.openai.com`, base URL `https://{hostname}/v1`), auth profile `openai.api-key` (bearer, the key proven by `GET /models`) and 3 request/response operations: `models.list`, `response.create` (write, `stream` fixed to `false`) and `response.get` (`stream`, `starting_after` and `include_obfuscation` withheld); `upstream/openai-responses/`: the publisher's OpenAPI document at `openai/openai-openapi` `089b14f36` and its MIT licence.
@@ -67,7 +69,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.3.1...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.4.0...HEAD
+[0.4.0]: https://github.com/beyond10x/connectors-definitions/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/beyond10x/connectors-definitions/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/beyond10x/connectors-definitions/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/beyond10x/connectors-definitions/compare/0.1.0...0.2.0
