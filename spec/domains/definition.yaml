@@ -29,7 +29,7 @@ types:
       - {name: values, type: "Optional<List<String>>"}
   - name: connectors_definitions.definition.AuthScheme
     kind: enum
-    variants: [basic, bearer, header, oauth2_refresh, oauth2_client_credentials]
+    variants: [basic, bearer, header, oauth2_refresh, oauth2_client_credentials, github_app]
   - name: connectors_definitions.definition.IdentitySource
     kind: enum
     variants: [api, id_token, configuration]
