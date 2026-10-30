@@ -11,6 +11,10 @@ definition is released.
 
 ## [Unreleased]
 
+### Added
+
+- `connectors/github.yaml`: write and check operations `branch.get` (`repos/get-branch`, read), `pull_request.create` (`pulls/create`, write, guarded by a read of `branch.get`), `pull_request.get` (`pulls/get`, read), `pull_request.merge` (`pulls/merge`, write, guarded by a read of `pull_request.get`), `check_runs.list` (`checks/list-for-ref`, read) and `commit.status` (`repos/get-combined-status-for-ref`, read). Not to be released before Connectors 0.62.0, whose lowerer reads the `guard`, `body_enums` and `bounds` fields these use.
+
 ## [0.5.2] - 2026-10-30
 
 ### Fixed

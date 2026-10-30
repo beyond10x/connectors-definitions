@@ -50,3 +50,39 @@ operations:
     op: repos/get-content
     embedded_text: {content: /content, encoding: /encoding, size: /size, max_bytes: 1048576}
     description: Read one file of a repository at path and ref, or its default branch, as text of at most 1 MiB; a directory, a binary file or a larger file is refused
+  branch.get:
+    op: repos/get-branch
+    description: Read one branch of a repository and its head commit; the guards of pull_request.create read it
+  pull_request.create:
+    op: pulls/create
+    effect: write
+    body: {title: string+!, head: string+!, base: string+!, body: string, draft: boolean, maintainer_can_modify: boolean}
+    guard:
+      before: {read: branch.get, with: {branch: body.head}, expect: {/commit/sha: sha}}
+      after: {expect: {/head/sha: sha, /head/ref: body.head, /base/ref: body.base, /state: =open}}
+    description: "Open a pull request from branch body.head into body.base of the same repository while body.head's head commit is the pinned sha. The provider reads the branch first and refuses before any write when it is absent or at another commit; the answer must name the pull request open at sha from body.head into body.base, or the effect is unknown. body.head is a branch name of this repository: an owner:branch head names no branch here and is refused by that read. The body admits no issue and no head_repo, so it never converts an issue. Unguarded against a second create: GitHub refuses a second open pull request for the same head and base (422)"
+  pull_request.get:
+    op: pulls/get
+    description: Read one pull request by pull_number, with its state, merged, mergeable, head ref and sha, and base ref; mergeable is null while GitHub is still computing it
+  pull_request.merge:
+    op: pulls/merge
+    effect: write
+    body: {sha: string+!, merge_method: string, commit_title: string, commit_message: string}
+    body_enums: {merge_method: [merge, squash, rebase]}
+    guard:
+      before:
+        read: pull_request.get
+        expect:
+          /head/sha: body.sha
+          /state: =open
+          /mergeable: =true
+      after: {expect: {/merged: =true}}
+    description: "Merge open pull request pull_number at the pinned head body.sha by body.merge_method (merge, squash or rebase). The provider reads the pull request first and refuses before any write unless it is open, mergeable and at body.sha; a mergeable still null is refused, read it again later. GitHub checks body.sha itself as the merge is made and answers 409 when the head moved in between; the answer must say merged, or the effect is unknown. The checks of the head are read with check_runs.list and commit.status, not by this guard"
+  check_runs.list:
+    op: checks/list-for-ref
+    bounds: {per_page: {minimum: 1, maximum: 100}}
+    description: "List the check runs of a commit, branch or tag ref, one page per call of at most per_page; read it at the head sha, not a branch name that may move; each run has status and, once completed, conclusion; the walk ends on a page shorter than per_page"
+  commit.status:
+    op: repos/get-combined-status-for-ref
+    bounds: {per_page: {minimum: 1, maximum: 100}}
+    description: "Read the combined commit status of a ref, read at the head sha: state is failure when any status is error or failure, pending when there are none or any is pending, else success; total_count 0 with state pending means no status was ever posted"
