@@ -8,6 +8,10 @@ auth:
     scheme: bearer
     label: GitHub token
     identity: {path: user, kind: github.user, subject: /id}
+  github.app:
+    default: true
+    scheme: github_app
+    label: GitHub App installation
 defaults:
   rate_limit_headers: {remaining: x-ratelimit-remaining, reset: x-ratelimit-reset}
 operations:

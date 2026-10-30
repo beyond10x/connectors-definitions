@@ -14,6 +14,11 @@ definition is released.
 ### Added
 
 - `connectors/github.yaml`: write and check operations `branch.get` (`repos/get-branch`, read), `pull_request.create` (`pulls/create`, write, guarded by a read of `branch.get`), `pull_request.get` (`pulls/get`, read), `pull_request.merge` (`pulls/merge`, write, guarded by a read of `pull_request.get`), `check_runs.list` (`checks/list-for-ref`, read) and `commit.status` (`repos/get-combined-status-for-ref`, read). Not to be released before Connectors 0.62.0, whose lowerer reads the `guard`, `body_enums` and `bounds` fields these use.
+- `connectors/github.yaml`: auth profile `github.app` ("GitHub App installation", scheme `github_app`). The format's `AuthScheme` gains `github_app`. Not to be released before Connectors 0.62.0, whose lowerer reads that scheme; an older Connectors installs the release and refuses to lower `github` alone.
+
+### Changed
+
+- `connectors/github.yaml`: the default profile is now `github.app`; `github.token` stays and must be named to be used. A consumer that configured `github` without naming a profile gets the App installation and needs its App id, installation id and key. `issues.assigned`, `notifications.list`, `user.me` and `review_requests.list` act for the authenticated user, which an installation token does not have (the pinned document marks the first three not enabled for GitHub Apps): use them under `github.token`.
 
 ## [0.5.2] - 2026-10-30
 
