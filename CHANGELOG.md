@@ -11,10 +11,12 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-30
+
 ### Added
 
-- `connectors/github.yaml`: write and check operations `branch.get` (`repos/get-branch`, read), `pull_request.create` (`pulls/create`, write, guarded by a read of `branch.get`), `pull_request.get` (`pulls/get`, read), `pull_request.merge` (`pulls/merge`, write, guarded by a read of `pull_request.get`), `check_runs.list` (`checks/list-for-ref`, read) and `commit.status` (`repos/get-combined-status-for-ref`, read). Not to be released before Connectors 0.62.0, whose lowerer reads the `guard`, `body_enums` and `bounds` fields these use.
-- `connectors/github.yaml`: auth profile `github.app` ("GitHub App installation", scheme `github_app`). The format's `AuthScheme` gains `github_app`. Not to be released before Connectors 0.62.0, whose lowerer reads that scheme; an older Connectors installs the release and refuses to lower `github` alone.
+- `connectors/github.yaml`: write and check operations `branch.get` (`repos/get-branch`, read), `pull_request.create` (`pulls/create`, write, guarded by a read of `branch.get`), `pull_request.get` (`pulls/get`, read), `pull_request.merge` (`pulls/merge`, write, guarded by a read of `pull_request.get`), `check_runs.list` (`checks/list-for-ref`, read) and `commit.status` (`repos/get-combined-status-for-ref`, read). Needs Connectors 0.62.0 or newer, whose lowerer reads the `guard`, `body_enums` and `bounds` fields these use.
+- `connectors/github.yaml`: auth profile `github.app` ("GitHub App installation", scheme `github_app`). The format's `AuthScheme` gains `github_app`. Needs Connectors 0.62.0 or newer, whose lowerer reads that scheme; an older Connectors installs the release and refuses to lower `github` alone.
 
 ### Changed
 
@@ -96,7 +98,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.5.2...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.6.0...HEAD
+[0.6.0]: https://github.com/beyond10x/connectors-definitions/compare/0.5.2...0.6.0
 [0.5.2]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/beyond10x/connectors-definitions/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/beyond10x/connectors-definitions/compare/0.4.0...0.5.0
