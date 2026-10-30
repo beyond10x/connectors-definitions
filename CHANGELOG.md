@@ -11,6 +11,12 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-10-30
+
+### Fixed
+
+- `connectors/zendesk.yaml`, `ticket.audits` (`ListAuditsForTicket`) and `ticket.comments` (`ListTicketComments`): the walk rule is refined, equal to the Connectors built-in catalog. `meta.has_more`, when present, decides: false ends the walk, true continues even past an empty page and is an error without `meta.after_cursor`. Without it the walk ends on a page with no `meta.after_cursor` or no items. A cursor seen before is an error.
+
 ## [0.5.1] - 2026-10-30
 
 ### Fixed
@@ -81,7 +87,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.5.2...HEAD
+[0.5.2]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/beyond10x/connectors-definitions/compare/0.5.0...0.5.1
 [0.5.0]: https://github.com/beyond10x/connectors-definitions/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/beyond10x/connectors-definitions/compare/0.3.1...0.4.0
