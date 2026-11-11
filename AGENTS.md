@@ -48,6 +48,11 @@ work may.
 Every write to GitHub is `b10x-bot[bot]`: commits and pushes through `b10x-gates bot`, pull
 requests and merges through `b10x-gates api`. A personal `gh` login is read-only here.
 
+A pull request merges by GitHub auto-merge: the bot opens it and enables auto-merge (squash)
+through `b10x-gates api` (`enablePullRequestAutoMerge`), and GitHub merges it once `task check`
+is green. The ruleset `b10x-main-through-pull-requests` admits main changes only through a pull
+request; ruleset changes are the owner's.
+
 ## Commands
 
 | Command | Does |
