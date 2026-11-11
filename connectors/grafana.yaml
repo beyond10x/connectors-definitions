@@ -1,7 +1,7 @@
 schema: urn:beyond10x:connectors-definition:1
 source:
   openapi: upstream/grafana/openapi3.json.gz
-  sha256: 89ff3e97e4d0e47ddd5a0bc757f2be2c909e655d275486a776a85fbde44dc661
+  sha256: be8923b42413a640f92af54a728f5b04f936a2851a04b8dfa277ae0db3bdebdc
   amendments: upstream/grafana/grafana.amendments.json
 base_url: https://{hostname}/api
 config: {hostname: {type: string}}

@@ -1,6 +1,6 @@
 {
   "format": "connectors-source-amendments/1",
-  "source_sha256": "89ff3e97e4d0e47ddd5a0bc757f2be2c909e655d275486a776a85fbde44dc661",
+  "source_sha256": "be8923b42413a640f92af54a728f5b04f936a2851a04b8dfa277ae0db3bdebdc",
   "amendments": [
     {
       "operation_id": "datasourceProxyPrometheusQuery",
