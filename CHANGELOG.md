@@ -11,6 +11,20 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-11
+
+### Added
+
+- `connectors/grafana.yaml`: Grafana with eight reads on one service-account bearer profile:
+  `alert_rules.list`, `annotations.list`, `dashboards.search`, `dashboard.get`, `datasources.list`,
+  and `prometheus.query`, `prometheus.query_range` and `loki.query_range` through the data-source
+  proxy. Source: Grafana's `public/openapi3.json` at `v13.3.1` (AGPL-3.0), vendored under
+  `upstream/grafana/` without `/components/schemas/NewApiKeyResult/properties/key/example`, an
+  example service-account token that secret scanners flag (SHA-256 `be8923b4…`; upstream
+  `89ff3e97…`; `upstream/grafana/README.md`). The three proxy reads come from `add_operation` amendments whose `uid`
+  carries an anchored `pattern`; lowering them needs Connectors 0.71.0 or newer, whose lowerer reads
+  amendment patterns.
+
 ## [0.6.0] - 2026-10-30
 
 ### Added
@@ -98,7 +112,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.7.0...HEAD
+[0.7.0]: https://github.com/beyond10x/connectors-definitions/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/beyond10x/connectors-definitions/compare/0.5.2...0.6.0
 [0.5.2]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...0.5.2
 [0.5.1]: https://github.com/beyond10x/connectors-definitions/compare/0.5.0...0.5.1

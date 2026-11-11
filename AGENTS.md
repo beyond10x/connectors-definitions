@@ -31,7 +31,9 @@ work may.
   URLs and scopes only.
 - Every upstream document is vendored gzipped under `upstream/<id>/`, pinned by SHA-256 in the
   definition, with URL, retrieval date, size and license in `upstream/<id>/README.md` and the
-  license file beside it where the document declares one.
+  license file beside it where the document declares one. A vendored document is the unmodified
+  upstream file, except where its README names a removed member by JSON pointer with the SHA-256
+  and size of both the upstream and the committed file.
 - Every auth profile cites the vendor's own documentation in `sources`. Do not copy endpoint URLs,
   PKCE modes or token shapes from another provider.
 - Operations are selected by their upstream `operationId`; nothing the upstream document states is
