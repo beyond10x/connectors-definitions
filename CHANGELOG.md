@@ -11,6 +11,16 @@ definition is released.
 
 ## [Unreleased]
 
+### Added
+
+- `connectors/grafana.yaml`: Grafana with eight reads on one service-account bearer profile:
+  `alert_rules.list`, `annotations.list`, `dashboards.search`, `dashboard.get`, `datasources.list`,
+  and `prometheus.query`, `prometheus.query_range` and `loki.query_range` through the data-source
+  proxy. Source: Grafana's `public/openapi3.json` at `v13.3.1` (AGPL-3.0), vendored under
+  `upstream/grafana/`. The three proxy reads come from `add_operation` amendments whose `uid`
+  carries an anchored `pattern`; lowering them needs a Connectors release that reads amendment
+  patterns.
+
 ## [0.6.0] - 2026-10-30
 
 ### Added
