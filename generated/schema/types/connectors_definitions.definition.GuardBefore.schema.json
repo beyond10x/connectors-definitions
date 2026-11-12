@@ -4,8 +4,8 @@
   "x-ess-provenance": {
     "system": "connectors_definitions",
     "specification_version": "v1",
-    "source_digest": "f0f3bf547fa0e29a11b8ccd9a603fc2d72225cf0e85b2de207e9f5015c5c2825",
-    "contract_digest": "slice-sha256/2:1f17c13dca01069d818b3456bc9051f63612ba9a2b745b340d078debd8a54326",
+    "source_digest": "2b3a1b34057f270247738ecfe59736ca24332d75a1246db591ddcc6d52f8cd36",
+    "contract_digest": "slice-sha256/2:55f5f1ba1b0a2b68d82f6f645a0b2f7789ed17124ca3d4aff6e332351d9c3a25",
     "regenerate": "ess generate"
   },
   "$defs": {
@@ -19,6 +19,13 @@
           "type": "string"
         },
         "with": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ess-map-key": "String"
+        },
+        "with_optional": {
           "type": "object",
           "additionalProperties": {
             "type": "string"

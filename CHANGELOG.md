@@ -11,6 +11,30 @@ definition is released.
 
 ## [Unreleased]
 
+### Added
+
+- `connectors/hubspot.yaml`: reads `owners.list` (`get-/crm/owners/2026-09_/crm/owners/v3`) and
+  `owner.get` (`get-/crm/owners/2026-09/{ownerId}_getById`), so the `hubspot_owner_id` a deal or
+  company carries resolves to a name, email and teams. HubSpot publishes both in its Crm Owners
+  `2026-09` document, not in the pinned CRM Objects one, so they enter as cited `add_operation`
+  amendments in `upstream/hubspot/hubspot-owners.amendments.json`, named by the new
+  `source.amendments`; the vendored CRM Objects document is unchanged.
+- `connectors/google-drive.yaml`: read `files.getMedia` (`drive.files.get` with `alt=media` fixed),
+  an uploaded file's content such as a PDF as base64 bytes, refused as capacity above 2 MiB; a
+  Google Docs, Sheets or Slides file is read with `files.export`. `files.get` now withholds `alt`
+  and stays metadata-only. Lowering both needs the Connectors release after 0.71.0, whose
+  Discovery projector (`discovery-openapi/2`) projects `alt`.
+- Format: a guard's `before` read takes `with_optional`, bound as `with` is, except that an input
+  the caller did not give is left out of the read instead of refusing the write. Connectors 0.71.0
+  reads it.
+
+### Changed
+
+- `connectors/google-drive.yaml`: `files.update`'s preflight read of `files.get` passes
+  `supportsAllDrives` through `with_optional` when the caller gives it, so a shared-drive file's
+  update is guarded by a read that reaches it; the description no longer says shared-drive files
+  are unsupported.
+
 ## [0.7.0] - 2026-11-11
 
 ### Added
