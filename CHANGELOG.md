@@ -27,6 +27,14 @@ definition is released.
 - Format: a guard's `before` read takes `with_optional`, bound as `with` is, except that an input
   the caller did not give is left out of the read instead of refusing the write. Connectors 0.71.0
   reads it.
+- Format: an auth profile may say `read_only: true`, offering an instance on it the connector's
+  reads and none of its writes, and a definition may name `default_profile`, the profile of an
+  instance that names none, refused as `malformed` unless it is one of its profiles.
+  `auth/google.yaml` adds `google.oauth.readonly`, and `connectors/google-gmail.yaml`,
+  `google-calendar.yaml` and `google-drive.yaml` add it with the one `.readonly` scope each as
+  `default_profile`, so an instance naming no profile reads only; `google.oauth` is marked
+  `default: true` and an instance that writes names it. Both fields need the Connectors release
+  after 0.71.0; earlier ones refuse them as unknown fields.
 
 ### Changed
 
