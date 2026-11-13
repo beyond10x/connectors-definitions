@@ -11,6 +11,8 @@ definition is released.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-13
+
 ### Added
 
 - `connectors/hubspot.yaml`: reads `owners.list` (`get-/crm/owners/2026-09_/crm/owners/v3`) and
@@ -18,11 +20,12 @@ definition is released.
   company carries resolves to a name, email and teams. HubSpot publishes both in its Crm Owners
   `2026-09` document, not in the pinned CRM Objects one, so they enter as cited `add_operation`
   amendments in `upstream/hubspot/hubspot-owners.amendments.json`, named by the new
-  `source.amendments`; the vendored CRM Objects document is unchanged.
+  `source.amendments`; the vendored CRM Objects document is unchanged. Lowering them needs
+  Connectors 0.72.0.
 - `connectors/google-drive.yaml`: read `files.getMedia` (`drive.files.get` with `alt=media` fixed),
   an uploaded file's content such as a PDF as base64 bytes, refused as capacity above 2 MiB; a
   Google Docs, Sheets or Slides file is read with `files.export`. `files.get` now withholds `alt`
-  and stays metadata-only. Lowering both needs the Connectors release after 0.71.0, whose
+  and stays metadata-only. Lowering both needs Connectors 0.72.0, whose
   Discovery projector (`discovery-openapi/2`) projects `alt`.
 - Format: a guard's `before` read takes `with_optional`, bound as `with` is, except that an input
   the caller did not give is left out of the read instead of refusing the write. Connectors 0.71.0
@@ -33,8 +36,8 @@ definition is released.
   `auth/google.yaml` adds `google.oauth.readonly`, and `connectors/google-gmail.yaml`,
   `google-calendar.yaml` and `google-drive.yaml` add it with the one `.readonly` scope each as
   `default_profile`, so an instance naming no profile reads only; `google.oauth` is marked
-  `default: true` and an instance that writes names it. Both fields need the Connectors release
-  after 0.71.0; earlier ones refuse them as unknown fields.
+  `default: true` and an instance that writes names it. Both fields need Connectors 0.72.0;
+  earlier releases refuse them as unknown fields.
 
 ### Changed
 
@@ -144,7 +147,8 @@ The first release: 15 connector definitions with 158 operations, validated again
 - Every upstream document vendored gzipped under `upstream/<id>/`, pinned by SHA-256 with URL, retrieval date, size and licence.
 - `task check`: validates the ESS source, the drift of `generated/`, each vendored document's SHA-256 and every definition and auth profile against the projected schema; ess 0.68.0.
 
-[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.7.0...HEAD
+[Unreleased]: https://github.com/beyond10x/connectors-definitions/compare/0.8.0...HEAD
+[0.8.0]: https://github.com/beyond10x/connectors-definitions/compare/0.7.0...0.8.0
 [0.7.0]: https://github.com/beyond10x/connectors-definitions/compare/0.6.0...0.7.0
 [0.6.0]: https://github.com/beyond10x/connectors-definitions/compare/0.5.2...0.6.0
 [0.5.2]: https://github.com/beyond10x/connectors-definitions/compare/0.5.1...0.5.2
