@@ -7,7 +7,7 @@ types:
     variants: ["urn:beyond10x:connectors-definitions-index:1"]
   - name: connectors_definitions.release.Feature
     kind: enum
-    variants: [query_fixed, query_folds, embedded_text, rate_limit_headers]
+    variants: [query_fixed, query_folds, embedded_text, rate_limit_headers, link_next]
   - name: connectors_definitions.release.HexDigest
     kind: newtype
     of: String

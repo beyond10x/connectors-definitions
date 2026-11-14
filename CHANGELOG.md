@@ -11,6 +11,23 @@ definition is released.
 
 ## [Unreleased]
 
+### Added
+
+- `connectors/basecamp.yaml`: Basecamp's OpenAPI 3.1 document, vendored unmodified with its MIT
+  licence and provenance under `upstream/basecamp/`, lowered with thirteen reads and no write:
+  `projects.list`, `project.get`, `project.people.list`, `message_board.get`, `messages.list`,
+  `message.get`, `comments.list`, `comment.get`, `todoset.get`, `todolists.list`, `todolist.get`,
+  `todos.list` and `todo.get`. One bearer profile, `basecamp.pat`, for a personal access token,
+  whose identity is `my/profile.json`; no OAuth. The base URL
+  `https://3.basecampapi.com/{accountId}` takes the account from the instance endpoint, so no read
+  takes `accountId`. Lowering it needs the next Connectors release after 0.72.0.
+- Format: a `base_url` whose last path segment is a variable `config` declares names the path
+  every operation starts with; the lowerer drops it and its path parameter from each operation,
+  and the instance endpoint's path supplies it. Connectors after 0.72.0 reads it.
+- Format: a paging style's `link_next: true` answers the `Link` header's `rel="next"` URL as
+  `next`, held under the instance endpoint, and release feature `link_next`. Connectors after
+  0.72.0 reads it.
+
 ## [0.8.0] - 2026-11-13
 
 ### Added
